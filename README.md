@@ -2,7 +2,12 @@
 Main repository of https://blockpos.io service. 
 A simple Point of Sale Bitcoin (BTC) application.
 
-With Block! you can set up a Bitcoin address or an XPUB, place the device in your local store and start accept Bitcoin in a while.
+With Block! you can set up a Bitcoin address or an XPUB, place the device in your local store and start accept Bitcoin in less than 3 minutes.
+
+We suggest to use secure wallets like:
+https://samouraiwallet.com/
+https://trezor.io/
+https://www.ledger.com/
 
 All the code is open source and the service will be free forever.
 
