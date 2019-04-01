@@ -14,7 +14,7 @@
     "vue-router": "^3.0.1",
     "@xkeshi/vue-qrcode": "^1.0.0",
     "axios": "^0.18.0",
-    "bootstrap": "4.1.1",
+    "bootstrap": ">=4.3.1",
     "cache-polyfill": "^1.0.1",
     "element-ui": "^2.4.6",
     "nouislider": "^11.1.0",
