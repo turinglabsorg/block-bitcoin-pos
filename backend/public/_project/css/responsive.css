@@ -1,0 +1,253 @@
+/*-------------------------------
+ RESPONSIVE LAYOUT
+---------------------------------*/
+
+/*Extra large devices (large desktops, 1200px and up)*/
+
+@media (min-width: 1200px) {}
+
+/*Large devices (desktops, 992px and up)*/
+
+@media only screen and (min-width: 992px) and (max-width: 1199.98px) {}
+
+/*Medium devices (tablets, 768px and up)*/
+
+@media only screen and (max-width: 991.98px) {}
+
+/*Medium devices (tablets, 768px and up)*/
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .lg-title {
+        font-size: 47px;
+        line-height: 50px;
+    }
+    .navbar-toggler {
+        background: #fff;
+        border-radius: 0px;
+        padding: 10px;
+    }
+    .navbar-toggler-icon {
+        height: auto;
+    }
+
+    .feature-box {
+        margin-bottom: 30px;
+    }
+
+    .video-bg {
+        top: 76px;
+    }
+
+    a.video-overlay-content {
+        left: 16%;
+        top: 30%;
+    }
+
+
+    .pricing-block {
+        margin-bottom: 40px;
+    }
+    
+    .app-padding {
+        margin-top: 100px;
+    }
+
+
+}
+
+/*Small devices (landscape phones, 576px and up)*/
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .navbar-toggler {
+        background: #fff;
+        border-radius: 0px;
+        padding: 10px;
+    }
+    .navbar-toggler-icon {
+        height: auto;
+    }
+    .features-icon {
+        position: relative;
+        display: block;
+        top: 0px;
+        margin-bottom: 20px;
+    }
+    .feature-box {
+        margin-bottom: 30px;
+    }
+
+    .features-block {
+        padding-left: 0px;
+        padding: 10px;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .about-bg {
+        width: 100%;
+        height: 620px;
+        margin-bottom: 30px;
+    }
+
+    .about-box {
+        padding-left: 0px;
+        padding-top: 30px;
+    }
+    .pricing-block {
+        margin-bottom: 40px;
+    }
+
+    .about-box h2 {
+        font-size: 45px;
+        margin-left: 0px;
+    }
+
+    #about-carousel {
+        padding-top: 0px;
+        margin-top: 200px;
+    }
+    .process-box {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+    .md-title {
+        font-size: 32px;
+        line-height: 42px;
+    }
+
+    .video-bg {
+        top: 20%;
+    }
+    .video-overlay-content i {
+        font-size: 17px;
+        width: 50px;
+        height: 50px;
+        padding-top: 10px;
+    }
+    a.video-overlay-content {
+        left: 11%;
+        top: 35%;
+    }
+
+    .pricing-block {
+        padding: 20px;
+    }
+
+    .footer-icon {
+        position: relative;
+        margin-bottom: 10px;
+    }
+    .footer-contact {
+        margin-bottom: 40px;
+        padding-left: 0px;
+        text-align: center;
+    }
+    .footer-content {
+        margin: 15px 0px;
+    }
+    
+    .app-banner-content {
+        padding-bottom: 100px;
+    }
+    .app-feature-box{
+        padding: 0px;
+        -webkit-box-shadow: none;
+        box-shadow:none;
+        margin-bottom: 40px;
+    }
+    
+    
+}
+
+/* Extra small devices (portrait phones, less than 576px)*/
+
+@media (max-width: 575.98px) {
+    .top-social {
+        display: none;
+    }
+    .navbar-toggler {
+        background: #fff;
+        border-radius: 0px;
+        padding: 10px;
+    }
+    .navbar-toggler-icon {
+        height: auto;
+    }
+
+    .lg-title {
+        font-size: 44px;
+        line-height: 46px;
+    }
+    .md-title {
+        font-size: 34px;
+        line-height: 44px;
+    }
+    .banner-img {
+        display: none;
+    }
+
+    .features-icon {
+        position: relative;
+        display: block;
+        top: 0px;
+        margin-bottom: 20px;
+    }
+    .feature-box {
+        margin-bottom: 30px;
+    }
+
+    .features-block {
+        padding-left: 0px;
+        padding: 10px;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .about-bg {
+        width: 100%;
+        height: 650px;
+        margin-bottom: 30px;
+    }
+
+    .about-box {
+        padding-left: 0px;
+        padding-top: 30px;
+    }
+    .pricing-block {
+        margin-bottom: 40px;
+    }
+
+    .about-box h2 {
+        font-size: 45px;
+        margin-left: 0px;
+    }
+
+    #about-carousel {
+        padding-top: 52px;
+    }
+    #process {
+        padding-top: 0px;
+    }
+    .process-box {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+
+    .video-overlay-content i {
+        font-size: 17px;
+        width: 50px;
+        height: 50px;
+        padding-top: 10px;
+    }
+    a.video-overlay-content {
+        left: 11%;
+        top: 35%;
+    }
+    .footer-contact {
+        margin-bottom: 40px;
+    }
+    .footer-content {
+        margin: 15px 0px;
+    }
+
+}
