@@ -66,6 +66,7 @@ function get_cli_params() {
                                   'oracle-raw:', 'oracle-json:',
                                   'include-unused',
                                   'only-unused',
+                                  'shift:',
                                   'gen-only:', 'type:',
                                   'batch-size:',
                                   'version', 'help',
@@ -130,6 +131,7 @@ function process_cli_params( $params ) {
     }
     
     $params['gap-limit'] = @$params['gap-limit'] ?: 20;
+    $params['shift'] = @$params['shift'] ?: 0;
     $params['batch-size'] = @$params['batch-size'] ?: 'auto';
     $params['cols'] = get_cols( $params );
     

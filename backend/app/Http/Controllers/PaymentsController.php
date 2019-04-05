@@ -36,8 +36,18 @@ class PaymentsController extends Controller{
         $amountBTC = round($request->input('amount')/$price,6);
       }
       if($loggeduser['xpub'] !== ''){
-        $addressJSON = json_decode(exec('../hdwalletlib/hd-wallet-addrs.php -g --xpub='.$loggeduser['xpub'].' --only-unused --gen-only=1 --format=json'));
-        $address = $addressJSON[0]->addr;
+        $xpub = $loggeduser['xpub'];
+        $address = '';
+        $s = 0;
+        while($address == ''){
+            $hdwallet = json_decode(exec('../hdwalletlib/hd-wallet-addrs.php -g --xpub='.$xpub.' --shift='.$s.' --only-unused --gen-only=1 --type=receive --format=json'), true);
+            $checkaddress = $hdwallet[0]['addr'];
+            $find = app("db")->table('requests')->where('address',$checkaddress)->where('status','Pending')->first();
+            if(!isset($find['rid'])){
+                $address = $checkaddress;
+            }
+            $s++;
+        }
       }else{
         $address = $loggeduser['address'];
       }

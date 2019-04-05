@@ -188,6 +188,7 @@ class walletaddrs {
         $gap_limit = $params['gap-limit'];
         $include_unused = $params['include-unused'];
         $only_unused = $params['only-unused'];
+        $shift = $params['shift'];
         $network = Bitcoin::getNetwork();
         $gen_only = @$params['gen-only'];
                 
@@ -282,7 +283,7 @@ class walletaddrs {
                     }
                 }else{
                     mylogger()->log( "Generating $typename unused public keys", mylogger::info );
-                    $i=0;
+                    $i=$shift;
                     $created = false;
                     while($created == false){
                         if( $i && $i % 5 == 0 ) {
