@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
+use LaravelQRCode\Facades\QRCode;
 
 $router->get('/',"WebController@load");
 $router->get('/verify-account/{token}',"AuthController@verify");
@@ -15,9 +16,6 @@ $router->get('/api', function () {
 });
 
 $router->get('/',"WebController@load");
-$router->get('qrcode/{URI}', function ($URI){
-  return LaravelQRCode\Facades\QRCode::text($URI.'?amount='.$_GET['amount'])->setSize(10)->setMargin(1)->setErrorCorrectionLevel('H')->png();
-});
 
 /*USERS*/
 $router->post('/users/login', "AuthController@login");

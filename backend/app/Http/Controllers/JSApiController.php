@@ -48,11 +48,15 @@ class JSApiController extends Controller{
           $Payment = new PaymentsController();
           $payment=(array)$Payment->init($request);
 
+          $qr = "https://chart.googleapis.com/chart?cht=qr&chl=".$payment['original']['data']['URI']."?amount=".$payment['original']['data']['amount']."&chs=400x400&chld=H|0";
+	        $imageData = base64_encode(file_get_contents($qr));
+          $qrimg = 'data:image/png;base64,'.$imageData;
+  
           $response=[
             "amount_btc" => floatval($payment['original']['data']['amount']),
             "address" => $payment['original']['data']['address'],
             "URI" => $payment['original']['data']['URI'],
-            "qrcode" => "https://blockpos.io/qrcode/".$payment['original']['data']['URI'],
+            "qrcode"=> $qrimg,
             "price" => $payment['original']['data']['price'],
             "request" => $payment['original']['data']['request'],
             "currency" => $loggeduser['currency'],
