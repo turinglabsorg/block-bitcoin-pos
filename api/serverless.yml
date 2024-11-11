@@ -1,0 +1,69 @@
+org: blockpos
+app: block
+service: api
+
+frameworkVersion: "4"
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  lambdaHashingVersion: "20201221"
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource:
+            - Fn::GetAtt: [BlockPoSCertificatesTable, Arn]
+        - Effect: Allow
+          Action:
+            - ssm:GetParametersByPath
+            - ssm:GetParameter
+            - ssm:GetParameters
+          Resource: 
+            - arn:aws:ssm:*:*:parameter/*
+        - Effect: Allow
+          Action:
+            - dynamodb:*
+          Resource: "*"
+
+  environment:
+    SECRET_PREFIX: "/BlockPoS"
+    STAGE: ${sls:stage}
+
+functions:
+  api:
+    timeout: 30
+    handler: src/api.handler
+    events:
+      - http:
+          path: /
+          method: ANY
+      - http:
+          path: /{proxy+}
+          method: ANY
+
+resources:
+  Resources:
+    BlockPoSCertificatesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: certificateId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: certificateId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${sls:stage}_BlockPoSCertificatesTable
+
+plugins:
+  - serverless-offline

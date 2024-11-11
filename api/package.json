@@ -1,0 +1,37 @@
+{
+  "scripts": {
+    "start": "NO_SERVERLESS=true node ./.build/src/api.js",
+    "build": "tsc",
+    "dev:local": "NO_SERVERLESS=true npx nodemon ./src/api.ts",
+    "dev:serverless:local": "serverless offline start --reloadHandler",
+    "dev:serverless:live": "serverless dev",
+    "deploy:serverless:dev": "npx serverless deploy --stage dev",
+    "deploy:serverless:prod": "npx serverless deploy --stage prod",
+    "db:create": "docker run --name mongo -p 27017:27017 mongo",
+    "db:run": "docker start mongo",
+    "db:stop": "docker stop mongo"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "dynamodb-admin": "^4.5.0",
+    "serverless-offline": "^14.3.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.433.0",
+    "@aws-sdk/client-ssm": "^3.433.0",
+    "@aws-sdk/lib-dynamodb": "^3.433.0",
+    "axios": "^1.7.7",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongoose": "^8.8.1",
+    "nodemailer": "^6.9.6",
+    "nodemailer-plugin-inline-base64": "^2.1.1",
+    "password-validator": "^5.3.0",
+    "serverless-http": "^3.2.0",
+    "uuid": "^9.0.1"
+  }
+}

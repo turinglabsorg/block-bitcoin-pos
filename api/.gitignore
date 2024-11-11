@@ -1,0 +1,11 @@
+# package directories
+node_modules
+jspm_packages
+keys/*
+!keys/pub.ts
+baks/
+
+# Serverless directories
+.serverless
+.env
+.build
