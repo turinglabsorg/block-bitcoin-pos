@@ -1,11 +1,12 @@
 import { returnSecret } from "./aws";
+import { log } from "./utils";
 
 const nodemailer = require("nodemailer");
 const inlineBase64 = require("nodemailer-plugin-inline-base64");
 
 const sendMail = (to, subject, email) => {
   return new Promise(async (response) => {
-    console.log("Sending e-mail to " + to + "..");
+    log("📧 Sending e-mail to " + to + "..");
     const sender_host = await returnSecret("sender_host");
     const sender_port = await returnSecret("sender_port");
     const sender_secure = await returnSecret("sender_secure");
@@ -32,10 +33,10 @@ const sendMail = (to, subject, email) => {
         subject: subject,
         html: email,
       });
-      console.log("SMTP response:", info);
+      log("📧 SMTP response:", info);
       response(info);
     } catch (e) {
-      console.log(e);
+      log(e);
       response(false);
     }
   });
@@ -43,7 +44,7 @@ const sendMail = (to, subject, email) => {
 
 const sendTemplate = (to, subject, template, vars) => {
   return new Promise(async (response) => {
-    console.log("Sending e-mail to " + to + "..");
+    log("Sending e-mail to " + to + "..");
     const sender_host = await returnSecret("sender_host");
     const sender_port = await returnSecret("sender_port");
     const sender_secure = await returnSecret("sender_secure");
@@ -75,10 +76,10 @@ const sendTemplate = (to, subject, template, vars) => {
         subject: subject,
         html: dynamicTemplate,
       });
-      console.log("SMTP response:", info);
+      log("SMTP response:", info);
       response(info);
     } catch (e) {
-      console.log(e);
+      log(e);
       response(false);
     }
   });

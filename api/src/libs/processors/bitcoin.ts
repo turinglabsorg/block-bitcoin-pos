@@ -1,9 +1,9 @@
 import BIP32Factory from "bip32";
 import * as ecc from "tiny-secp256k1";
-import dotenv from "dotenv";
 import * as bitcoin from "bitcoinjs-lib";
 import b58 from "bs58check";
 import axios from "axios";
+import { log } from "../utils";
 
 function getAddress(node: any, network?: any): string {
   return bitcoin.payments.p2wpkh({ pubkey: node.publicKey, network }).address!;
@@ -51,10 +51,10 @@ async function deriveAddressFromZpub(
 
     return address;
   } catch (e) {
-    console.log("🚨 ERROR_DERIVE_ADDRESS_FROM_ZPUB", e);
-    console.log("-----------------------");
-    console.log("DEBUG_ZPUB", zpub);
-    console.log("DEBUG_PATH", path);
+    log("🚨 ERROR_DERIVE_ADDRESS_FROM_ZPUB", e);
+    log("-----------------------");
+    log("DEBUG_ZPUB", zpub);
+    log("DEBUG_PATH", path);
     return false;
   }
 }
@@ -78,7 +78,7 @@ async function deriveAddressFromXpub(
     const address = getAddress(child, bitcoin.networks.bitcoin);
     return address;
   } catch (e) {
-    console.log("🚨 ERROR_DERIVE_ADDRESS_FROM_XPUB", e);
+    log("🚨 ERROR_DERIVE_ADDRESS_FROM_XPUB", e);
     return false;
   }
 }
@@ -113,7 +113,7 @@ export async function calculateAmountCrypto(
     const amountCrypto = (amountFiat / pricePerBitcoin) * (1 + slippage / 100);
     return parseFloat(amountCrypto.toFixed(8));
   } catch (e) {
-    console.log("🚨 ERROR_CALCULATE_AMOUNT_CRYPTO", e);
+    log("🚨 ERROR_CALCULATE_AMOUNT_CRYPTO", e);
     return false;
   }
 }
@@ -132,21 +132,21 @@ export async function checkBitcoinPayment(
         },
       }
     );
-    console.log("💰 DEBUG_BITCOIN_BALANCE", response.data);
+    log("💰 DEBUG_BITCOIN_BALANCE", response.data);
     if (parseFloat(response.data.incoming) > 0) {
       if (onlyConfirmed) {
-        console.log("💰 DEBUG_ONLY_CONFIRMED", onlyConfirmed);
+        log("💰 DEBUG_ONLY_CONFIRMED", onlyConfirmed);
         const amount =
           parseFloat(response.data.incoming) -
           parseFloat(response.data.incomingPending);
-        console.log("💰 DEBUG_AMOUNT", amount);
+        log("💰 DEBUG_AMOUNT", amount);
         return amount;
       }
       return parseFloat(response.data.incoming);
     }
     return false;
   } catch (e) {
-    console.log("🚨 ERROR_CHECK_BITCOIN_PAYMENT", e);
+    log("🚨 ERROR_CHECK_BITCOIN_PAYMENT", e);
     return false;
   }
 }

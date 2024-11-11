@@ -16,6 +16,7 @@ import {
 } from "./routes/users";
 import { checkRequest, createRequest, getRequests } from "./routes/requests";
 import { checkRequests } from "./routes/daemons";
+import { log } from "./libs/utils";
 
 // Init express server
 const app = express();
@@ -28,7 +29,7 @@ app.use(async (req, res, next) => {
     await connect();
     next();
   } catch (e) {
-    console.log("😵 Can't connect to MongoDB!");
+    log("😵 Can't connect to MongoDB!");
     res.send({ message: "DB IS NOT WORKING", error: true });
   }
 });
@@ -86,5 +87,5 @@ if (process.env.NO_SERVERLESS === undefined) {
   module.exports.handler = serverless(app);
 } else {
   const port = process.env.PORT || 8008;
-  app.listen(port, () => console.log(`BlockPOS listening on: ${port}`));
+  app.listen(port, () => log(`₿ BlockPOS listening on: ${port}`));
 }

@@ -1,5 +1,6 @@
 import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
 import dotenv from "dotenv";
+import { log } from "./utils";
 dotenv.config();
 
 const returnSecret = (key): any => {
@@ -16,11 +17,11 @@ const returnSecret = (key): any => {
         if (secret !== undefined) {
           response(secret);
         } else {
-          console.log("Error, secret is undefined");
+          log("🚨 ERROR_SECRET_IS_UNDEFINED");
           response(false);
         }
       } catch (e) {
-        console.log("Decryption error:", e);
+        log("🚨 ERROR_DECRYPTION", e);
         response(false);
       }
     } else {

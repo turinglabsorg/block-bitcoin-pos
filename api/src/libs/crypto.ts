@@ -1,6 +1,7 @@
 import { User } from "../database/schemas/users";
 import { returnSecret } from "./aws";
 import crypto from "crypto";
+import { log } from "./utils";
 
 const createToken = () => {
   var result = "";
@@ -88,7 +89,7 @@ const decrypt = (encrypted, password?) => {
       let decrypted = decipher.update(parts[1], "hex", "utf8");
       response(decrypted + decipher.final("utf8"));
     } catch (e) {
-      console.log("Error while decrypting:", e);
+      log("🚨 ERROR_DECRYPT", e);
       response(false);
     }
   });

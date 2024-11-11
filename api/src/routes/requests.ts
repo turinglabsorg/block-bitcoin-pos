@@ -17,6 +17,7 @@ import {
 } from "../libs/processors/bitcoin";
 import { User } from "../database/schemas/users";
 import mongoose from "mongoose";
+import { log } from "../libs/utils";
 export const createRequest = async (
   req: express.Request,
   res: express.Response
@@ -125,7 +126,7 @@ export const checkRequest = async (
     request.status = RequestStatus.EXPIRED;
     request.updatedAt = Date.now();
     await request.save();
-    console.log("🚨 USER_NOT_VALID", request.uuid);
+    log("💰 USER_NOT_VALID", request.uuid);
     if (!isDaemon) {
       res.send({ message: "User not valid.", error: true });
     }
@@ -145,7 +146,7 @@ export const checkRequest = async (
     request.address &&
     request.amountCrypto
   ) {
-    console.log("🔥 Checking bitcoin payment...");
+    log("💰 Checking bitcoin payment...");
     const check = await checkBitcoinPayment(
       request.address,
       user.onlyConfirmed ?? false
