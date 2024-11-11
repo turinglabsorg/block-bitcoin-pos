@@ -1,13 +1,18 @@
 import express from "express";
 import serverless from "serverless-http";
 import cors from "cors";
-import { returnSecret } from "./libs/aws";
-import axios from "axios";
-import { generatePassword } from "./libs/crypto";
-import { sendTemplate } from "./libs/mail";
-import { email_basic } from "./templates/email_basic";
 import { connect } from "./database/mongo";
-import { v4 as uuidv4 } from "uuid";
+import {
+  createUser,
+  askToken,
+  loginUser,
+  getUser,
+  editUser,
+  deleteUser,
+  runRecovery,
+  recoverPwd,
+  changePwd,
+} from "./routes/users";
 
 // Init express server
 const app = express();
@@ -24,6 +29,29 @@ app.use(async (req, res, next) => {
     res.send({ message: "DB IS NOT WORKING", error: true });
   }
 });
+
+/**
+ * Users functions
+ */
+
+// Create new user
+app.post("/users", createUser);
+// Ask for a new email activation
+app.post("/users/token", askToken);
+// Login user
+app.post("/users/login", loginUser);
+// Get user info
+app.get("/users", getUser);
+// Edit user info
+app.put("/users", editUser);
+// Delete user
+app.delete("/users", deleteUser);
+// Start password recovery
+app.post("/users/run-recovery", runRecovery);
+// Recover password
+app.post("/users/recover-password", recoverPwd);
+// Change password
+app.post("/users/change-password", changePwd);
 
 // Default response
 app.get("/", async function (req, res) {
