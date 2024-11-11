@@ -12,7 +12,10 @@ import {
   runRecovery,
   recoverPwd,
   changePwd,
+  getPublicUser,
 } from "./routes/users";
+import { checkRequest, createRequest, getRequests } from "./routes/requests";
+import { checkRequests } from "./routes/daemons";
 
 // Init express server
 const app = express();
@@ -42,6 +45,8 @@ app.post("/users/token", askToken);
 app.post("/users/login", loginUser);
 // Get user info
 app.get("/users", getUser);
+// Get public user info
+app.get("/users/:username", getPublicUser);
 // Edit user info
 app.put("/users", editUser);
 // Delete user
@@ -50,8 +55,21 @@ app.delete("/users", deleteUser);
 app.post("/users/run-recovery", runRecovery);
 // Recover password
 app.post("/users/recover-password", recoverPwd);
-// Change password
-app.post("/users/change-password", changePwd);
+
+/**
+ * Requests functions
+ */
+
+// Create new request
+app.post("/requests", createRequest);
+app.get("/requests/:uuid", checkRequest);
+app.get("/requests", getRequests);
+
+/**
+ * Daemons functions
+ */
+
+app.get("/daemons/check-requests", checkRequests);
 
 // Default response
 app.get("/", async function (req, res) {

@@ -14,9 +14,6 @@ function zpubToXpub(zpub: string) {
   // Decode the base58check string
   const data = b58.decode(zpub);
 
-  // zpub version bytes: 04b24746
-  // xpub version bytes: 0488b21e
-
   // Verify we're actually dealing with a zpub
   const zpubVersion = Buffer.from(data.slice(0, 4)).toString("hex");
   if (zpubVersion !== "04b24746") {

@@ -10,11 +10,13 @@ import { returnSecret } from "../libs/aws";
 import { sendMail } from "../libs/mail";
 import { getAccountActivationEmail } from "../templates/account-activation";
 import { getPasswordRecoveryEmail } from "../templates/password-recovery";
+import { EditUserBody, CreateUserBody, LoginUserBody } from "./types";
 
 export async function createUser(req: express.Request, res: express.Response) {
-  if (req.body.email !== undefined) {
+  const body: CreateUserBody = req.body;
+  if (body.email !== undefined) {
     try {
-      const check = await User.findOne({ email: req.body.email });
+      const check = await User.findOne({ email: body.email });
 
       if (check === null) {
         const token =
@@ -22,13 +24,11 @@ export async function createUser(req: express.Request, res: express.Response) {
           Math.random().toString(36).substring(2, 15);
         const user = new User({
           email: req.body.email,
-          name: req.body.name,
-          surname: req.body.surname,
           password: "",
           recoveryToken: token,
           recoveryTokenExpiration: new Date().getTime() + 48 * 60 * 60 * 1000, // 48 hours
           active: false,
-          entity: req.body.entity,
+          slippage: 2,
           lastUpdated: new Date().getTime(),
         });
         await user.save();
@@ -98,10 +98,11 @@ export async function askToken(req: express.Request, res: express.Response) {
 }
 
 export async function loginUser(req: express.Request, res: express.Response) {
-  if (req.body.email !== undefined && req.body.password !== undefined) {
+  const body: LoginUserBody = req.body;
+  if (body.email !== undefined && body.password !== undefined) {
     try {
-      const password = hash(req.body.password);
-      const user = await User.findOne({ email: req.body.email, password });
+      const password = hash(body.password);
+      const user = await User.findOne({ email: body.email, password });
       if (user !== null) {
         const jwt = {
           email: user.email,
@@ -141,9 +142,14 @@ export async function getUser(req: express.Request, res: express.Response) {
       message: "User logged in.",
       error: false,
       user: {
-        id: user.id,
         email: user.email,
+        username: user.username,
         xpub: user.xpub,
+        currency: user.currency,
+        basePath: user.basePath,
+        slippage: user.slippage,
+        onlyConfirmed: user.onlyConfirmed,
+        metadata: user.metadata,
       },
     });
   } else {
@@ -151,8 +157,31 @@ export async function getUser(req: express.Request, res: express.Response) {
   }
 }
 
+export async function getPublicUser(
+  req: express.Request,
+  res: express.Response
+) {
+  const username = req.params.username;
+  const user = await User.findOne({ username });
+  if (user !== null) {
+    res.send({
+      user: {
+        username: user.username,
+        metadata: user.metadata,
+        slippage: user.slippage,
+        currency: user.currency,
+        onlyConfirmed: user.onlyConfirmed,
+      },
+      error: false,
+    });
+  } else {
+    res.send({ message: "User not found.", error: true });
+  }
+}
+
 export async function editUser(req: express.Request, res: express.Response) {
-  if (req.body.email !== undefined && req.body.xpub !== undefined) {
+  const body: EditUserBody = req.body;
+  if (body.email !== undefined && body.xpub !== undefined) {
     try {
       const user = await validateSession(req);
       if (user === false) {
@@ -160,13 +189,31 @@ export async function editUser(req: express.Request, res: express.Response) {
         return;
       }
       const check = await User.findOne({ email: req.body.email });
-      if (check === null || check._id.toString() === user._id.toString()) {
-        user.email = req.body.email;
-        user.xpub = req.body.xpub;
+      const checkUsername = await User.findOne({ username: body.username });
+      if (
+        (check === null || check._id.toString() === user._id.toString()) &&
+        (checkUsername === null ||
+          checkUsername._id.toString() === user._id.toString())
+      ) {
+        user.email = body.email;
+        user.xpub = body.xpub;
+        user.basePath = body.basePath ?? "0";
+        user.slippage = body.slippage ?? 2;
+        user.currency = body.currency ?? "USD";
+        user.metadata = body.metadata ?? {};
+        user.username = body.username ?? "";
+        user.onlyConfirmed = body.onlyConfirmed ?? false;
         await user.save();
         res.send({ message: "User changed.", error: false });
       } else {
-        res.send({ message: "User with same e-mail exists.", error: true });
+        if (
+          checkUsername !== null &&
+          checkUsername._id.toString() !== user._id.toString()
+        ) {
+          res.send({ message: "User with same username exists.", error: true });
+        } else {
+          res.send({ message: "User with same e-mail exists.", error: true });
+        }
       }
     } catch (e) {
       res.send({
