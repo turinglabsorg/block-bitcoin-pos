@@ -8,4 +8,5 @@ baks/
 # Serverless directories
 .serverless
 .env
+cli/.env
 .build
