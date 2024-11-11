@@ -22,6 +22,8 @@ export async function checkRequests(
     for (const request of requests) {
       req.params.uuid = request.uuid;
       await checkRequest(req, {}, true);
+      // Wait 1 second between requests
+      await new Promise((resolve) => setTimeout(resolve, 1000));
     }
   }
   isWorking = false;
