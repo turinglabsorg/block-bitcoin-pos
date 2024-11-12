@@ -17,7 +17,7 @@ const isMenuOpen = ref(false)
 </script>
 <template>
   <div>
-    <h4 class="headline">
+    <div class="headline">
       <div @click="state.push('/')" class="logo-title">
         <img src="./assets/bitcoin.png" class="logo" />Block!POS
       </div>
@@ -26,20 +26,23 @@ const isMenuOpen = ref(false)
         <button v-if="session" @click="isMenuOpen = !isMenuOpen" class="nav-button"><i
             class="lni lni-menu-hamburger-1"></i></button>
       </div>
-      <div class="menu" :class="{ open: isMenuOpen }">
-        <img src="./assets/bitcoin.png" class="logo-menu" />
-        <button v-if="session" @click="isMenuOpen = !isMenuOpen" class="close-button"><i
+    </div>
+    <div class="menu" :class="{ open: isMenuOpen }">
+      <img src="./assets/bitcoin.png" class="logo-menu" />
+      <button v-if="session" @click="isMenuOpen = !isMenuOpen" class="close-button"><i
           class="lni lni-menu-hamburger-1"></i></button>
-        <div class="menu-buttons">
-          <button @click="state.push('/'); isMenuOpen = false" class="nav-button"><i
-              class="lni lni-calculator-2"></i> POS</button>
-          <button @click="state.push('/settings'); isMenuOpen = false" class="nav-button"><i
-              class="lni lni-gear-1"></i> Settings</button>
-          <button @click="state.logout(); isMenuOpen = false" class="nav-button"><i
-              class="lni lni-exit"></i> Exit</button>
-        </div>
+      <div class="menu-buttons">
+        <button @click="state.push('/'); isMenuOpen = false" class="nav-button"><i class="lni lni-calculator-2"></i>
+          POS</button>
+        <button @click="state.push('/settings'); isMenuOpen = false" class="nav-button"><i class="lni lni-gear-1"></i>
+          Settings</button>
+        <button @click="state.logout(); isMenuOpen = false" class="nav-button"><i class="lni lni-exit"></i>
+          Exit</button>
       </div>
-    </h4>
+    </div>
+    <div class="footer">
+      Open-source project on <a href="https://github.com/turinglabsorg/block-bitcoin-pos">GitHub</a>.
+    </div>
     <Login v-if="state.route === 'login'" />
     <Settings v-if="state.route === 'settings'" />
     <Register v-if="state.route === 'register'" />
@@ -49,8 +52,5 @@ const isMenuOpen = ref(false)
     <Splash v-if="state.route === '' && !session" />
     <Pos v-if="state.route === '' && session" />
     <Init v-if="state.route === 'init'" />
-    <div class="footer">
-      Open-source project on <a href="https://github.com/turinglabsorg/block-bitcoin-pos">GitHub</a>.
-    </div>
   </div>
 </template>

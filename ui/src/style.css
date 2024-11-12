@@ -99,6 +99,7 @@ button:hover {
   height: 100vh;
   transform: translateX(-120%);
   transition: transform 0.3s ease-in-out;
+  z-index: 999 !important;
 }
 .start-button {
   background-color: #4d4d4d;
@@ -123,6 +124,7 @@ button:hover {
 .logo-menu {
   width: 70px;
   margin-bottom: 10px;
+  float: left;
 }
 .menu .close-button {
   background-color: #fff;
@@ -153,6 +155,7 @@ body {
 .splash {
   margin-top: 10vh;
   text-align: left;
+  padding-bottom: 50px;
 }
 .splash h3 {
   margin-bottom: 15px;
@@ -165,7 +168,12 @@ body {
   align-items: left;
   width: 100%;
   text-align: left;
-  position: relative;
+  position: fixed;
+  background-color: #f7931a;
+  height: 45px;
+  padding: 20px 0 0 10px;
+  top: 0;
+  left: 0;
 }
 .headline:hover {
   cursor: pointer;
@@ -183,11 +191,14 @@ body {
   font-style: italic;
 }
 .footer {
+  background-color: #f7931a;
   font-size: 0.8em;
   position: fixed;
-  bottom: 10px;
+  bottom: 0px;
   left: 0;
   width: 100%;
+  z-index: 10;
+  padding: 5px 0 10px 0;
 }
 hr {
   color: #fff;
@@ -258,6 +269,9 @@ h2 {
   align-items: center;
   justify-content: left;
   margin-bottom: 10px;
+}
+.pos-container {
+  padding-top: 60px;
 }
 .pos-container input {
   width: 97%;
