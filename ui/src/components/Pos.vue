@@ -83,18 +83,26 @@ const resetPayment = () => {
 }
 
 const checkPayment = async () => {
-  const res = await axios.get(`${apiUrl}/requests/${request.value.uuid}`)
-  if (res.data.error) {
-    errored.value = true
-    message.value = res.data.message
-  } else {
-    payment.value = res.data.request
-    fullfillmentPercentage.value = res.data.fullfillmentPercentage
-    if (res.data.request.status === "completed") {
-      completed.value = true
-      clearInterval(checkInterval.value)
+  try {
+    const res = await axios.get(`${apiUrl}/requests/${request.value.uuid}`)
+    if (res.data.error) {
+      errored.value = true
+      message.value = res.data.message
+    } else {
+      payment.value = res.data.request
+      fullfillmentPercentage.value = res.data.fullfillmentPercentage
+      if (res.data.request.status === "completed") {
+        completed.value = true
+        clearInterval(checkInterval.value)
+      }
     }
+  } catch (e) {
+    console.log("ERROR_CHECK_PAYMENT", e)
   }
+}
+
+const copyToClipboard = (text: string) => {
+  navigator.clipboard.writeText(text)
 }
 </script>
 
@@ -118,9 +126,9 @@ const checkPayment = async () => {
     <div class="message" v-if="message" :class="{ error: errored }">{{ message }}</div>
   </div>
   <div v-if="request.uuid && !completed">
-    <h3>Send {{ request?.amountCrypto }} BTC to:</h3>
+    <h3>Send {{ request?.amountCrypto }} BTC ({{ request?.amountFiat }} {{ currency.toUpperCase() }}) to:</h3>
     <img width="300" :src="qr" />
-    <div class="address">{{ request.address }}</div>
+    <div class="address" @click="copyToClipboard(request.address)">{{ request.address }}</div>
     BTC price: {{ request.price }} {{ currency.toUpperCase() }}<br>
     <a :href="`/request/${request.uuid}`" target="_blank">
       <button class="init-button" style="margin-top: 20px;">Share payment</button>

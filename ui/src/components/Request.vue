@@ -3,12 +3,10 @@ import { ref } from 'vue'
 import axios from 'axios'
 import QRCode from 'qrcode'
 
-const isLoading = ref(false)
 const errored = ref(false)
 const completed = ref(false)
 const checkInterval: any = ref()
 const message = ref('')
-const currency = ref('')
 const apiUrl = import.meta.env.VITE_API_URL
 const request: any = ref({})
 const payment: any = ref({})
@@ -32,18 +30,26 @@ const fetchPayment = async () => {
 fetchPayment()
 
 const checkPayment = async () => {
-  const res = await axios.get(`${apiUrl}/requests/${request.value.uuid}`)
-  if (res.data.error) {
-    errored.value = true
-    message.value = res.data.message
-  } else {
-    payment.value = res.data.request
-    fullfillmentPercentage.value = res.data.fullfillmentPercentage
-    if (res.data.request.status === "completed") {
-      completed.value = true
-      clearInterval(checkInterval.value)
+  try {
+    const res = await axios.get(`${apiUrl}/requests/${request.value.uuid}`)
+    if (res.data.error) {
+      errored.value = true
+      message.value = res.data.message
+    } else {
+      payment.value = res.data.request
+      fullfillmentPercentage.value = res.data.fullfillmentPercentage
+      if (res.data.request.status === "completed") {
+        completed.value = true
+        clearInterval(checkInterval.value)
+      }
     }
+  } catch (e) {
+    console.log("ERROR_CHECK_PAYMENT", e)
   }
+}
+
+const copyToClipboard = (text: string) => {
+  navigator.clipboard.writeText(text)
 }
 </script>
 
@@ -56,8 +62,8 @@ const checkPayment = async () => {
   <div v-if="request.uuid && !completed">
     <h3>Send {{ request?.amountCrypto }} BTC to:</h3>
     <img width="300" :src="qr" />
-    <div class="address">{{ request.address }}</div>
-    BTC price: {{ request.price }} {{ currency.toUpperCase() }}<br>
+    <div class="address" @click="copyToClipboard(request.address)">{{ request.address }}</div>
+    BTC price: {{ request.price }} {{ request.currency.toUpperCase() }}<br>
     <hr>
     <div v-if="payment.uuid" style="margin-top: 20px;">
       Waiting for payment confirmation...
