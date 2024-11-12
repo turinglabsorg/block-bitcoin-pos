@@ -17,6 +17,7 @@ const login = async () => {
     email: email.value,
     password: password.value,
   })
+  isLoading.value = false
   if (res.data.error) {
     errored.value = true
     message.value = res.data.message
@@ -31,6 +32,7 @@ const login = async () => {
   <input type="email" class="input" v-model="email" placeholder="Email" />
   <input type="password" class="input" v-model="password" placeholder="Password" />
   <button class="form-button" @click="login">Enter</button>
+  <div class="message" v-if="message" :class="{ error: errored }">{{ message }}</div>
   <br /><br />
   <div class="link" @click="state.push('/register')">Don't have an account? Register here.</div>
 </template>

@@ -104,14 +104,17 @@ export async function calculateAmountCrypto(
   amountFiat: number,
   currency: string,
   slippage: number
-): Promise<number | false> {
+): Promise<{ price: number; amountCrypto: number } | false> {
   try {
     const price = await axios.get(
       `https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=${currency}`
     );
     const pricePerBitcoin = price.data.bitcoin[currency];
     const amountCrypto = (amountFiat / pricePerBitcoin) * (1 + slippage / 100);
-    return parseFloat(amountCrypto.toFixed(8));
+    return {
+      price: pricePerBitcoin,
+      amountCrypto: parseFloat(amountCrypto.toFixed(8)),
+    };
   } catch (e) {
     log("🚨 ERROR_CALCULATE_AMOUNT_CRYPTO", e);
     return false;

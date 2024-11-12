@@ -74,14 +74,22 @@ const setup = async () => {
     currency: currency.value,
     onlyConfirmed: !allowUnconfirmed.value,
     slippage: slippage.value
-  })
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${state.session}`
+      },
+    }
+  )
+  isLoading.value = false
   if (res.data.error) {
     errored.value = true
     message.value = res.data.message
   } else {
-    message.value = 'Account activated, redirecting to login...'
+    message.value = 'Account setup, redirecting...'
     setTimeout(() => {
-      state.push('/login')
+      state.push('/')
     }, 3500)
   }
 }

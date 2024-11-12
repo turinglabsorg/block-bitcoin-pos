@@ -180,7 +180,7 @@ export async function getPublicUser(
 
 export async function editUser(req: express.Request, res: express.Response) {
   const body: EditUserBody = req.body;
-  if (body.email !== undefined && body.xpub !== undefined) {
+  if (body.xpub !== undefined) {
     try {
       const user = await validateSession(req);
       if (user === false) {
@@ -191,17 +191,19 @@ export async function editUser(req: express.Request, res: express.Response) {
       const checkUsername = await User.findOne({ username: body.username });
       if (
         (check === null || check._id.toString() === user._id.toString()) &&
-        (checkUsername === null ||
+        (req.body.username === undefined ||
+          req.body.username === "" ||
+          checkUsername === null ||
           checkUsername._id.toString() === user._id.toString())
       ) {
-        user.email = body.email;
-        user.xpub = body.xpub;
-        user.basePath = body.basePath ?? "0";
-        user.slippage = body.slippage ?? 2;
-        user.currency = body.currency ?? "USD";
-        user.metadata = body.metadata ?? {};
-        user.username = body.username ?? "";
-        user.onlyConfirmed = body.onlyConfirmed ?? false;
+        user.email = body.email ?? user.email;
+        user.xpub = body.xpub ?? user.xpub;
+        user.basePath = body.basePath ?? user.basePath ?? "0";
+        user.slippage = body.slippage ?? user.slippage ?? 2;
+        user.currency = body.currency ?? user.currency ?? "usd";
+        user.metadata = body.metadata ?? user.metadata ?? {};
+        user.username = body.username ?? user.username ?? "";
+        user.onlyConfirmed = body.onlyConfirmed ?? user.onlyConfirmed ?? false;
         await user.save();
         res.send({ message: "User changed.", error: false });
       } else {

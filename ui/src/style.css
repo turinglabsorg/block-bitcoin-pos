@@ -167,6 +167,7 @@ h2 {
 .amount {
   font-size: 2em;
   padding: 1em;
+  position: relative;
 }
 .init-button {
   width: 98%;
@@ -190,7 +191,27 @@ textarea {
   height: 25vh;
   margin-bottom: 10px;
   font-size: 1.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
+}
+.currency {
+  font-weight: 900;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  text-transform: uppercase;
+}
+.address {
+  font-size: 0.8em;
+  margin-top: 10px;
+}
+.confirmation-text {
+  font-size: 1.5em;
+  margin-top: 20vh;
+  font-weight: 900;
 }
 @media screen and (max-width: 560px) {
   #app {

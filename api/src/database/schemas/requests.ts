@@ -12,6 +12,7 @@ export const requestSchema = new Schema({
   amountFiat: Number,
   amountCrypto: Number,
   amountReceived: Number,
+  price: Number,
   currency: String,
   address: String,
   status: String,

@@ -31,6 +31,7 @@ const activate = async () => {
     email: state.getRouteParams('email'),
     password: password.value,
   })
+  isLoading.value = false
   if (res.data.error) {
     errored.value = true
     message.value = res.data.message

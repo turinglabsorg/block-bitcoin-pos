@@ -18,6 +18,7 @@ import {
 import { User } from "../database/schemas/users";
 import mongoose from "mongoose";
 import { log } from "../libs/utils";
+
 export const createRequest = async (
   req: express.Request,
   res: express.Response
@@ -79,12 +80,12 @@ export const createRequest = async (
     return;
   }
   // Calculate amount crypto
-  const amountCrypto = await calculateAmountCrypto(
+  const calculation = await calculateAmountCrypto(
     body.amount,
     user.currency ?? "usd",
     user.slippage ?? 2
   );
-  if (!amountCrypto) {
+  if (!calculation) {
     res.send({ message: "Can't calculate amount crypto.", error: true });
     return;
   }
@@ -97,7 +98,8 @@ export const createRequest = async (
   request.path = path;
   request.child = child;
   request.amountFiat = body.amount;
-  request.amountCrypto = amountCrypto;
+  request.amountCrypto = calculation.amountCrypto;
+  request.price = calculation.price;
   request.currency = user.currency ?? "usd";
   request.status = RequestStatus.PENDING;
   request.createdAt = Date.now();
