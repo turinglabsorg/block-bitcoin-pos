@@ -1,4 +1,4 @@
-import { returnSecret } from "./aws";
+import { returnSecret } from "./crypto";
 import { log } from "./utils";
 
 const nodemailer = require("nodemailer");

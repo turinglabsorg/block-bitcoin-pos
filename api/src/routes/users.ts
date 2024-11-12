@@ -6,7 +6,7 @@ import {
   validateSession,
   validatePassword,
 } from "../libs/crypto";
-import { returnSecret } from "../libs/aws";
+import { returnSecret } from "../libs/crypto";
 import { sendMail } from "../libs/mail";
 import { getAccountActivationEmail } from "../templates/account-activation";
 import { getPasswordRecoveryEmail } from "../templates/password-recovery";

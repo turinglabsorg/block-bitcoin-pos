@@ -1,7 +1,16 @@
 import { User } from "../database/schemas/users";
-import { returnSecret } from "./aws";
 import crypto from "crypto";
 import { log } from "./utils";
+
+const returnSecret = (key): any => {
+  return new Promise(async (response) => {
+    if (process.env[key] === undefined) {
+      response(false);
+    } else {
+      response(process.env[key]);
+    }
+  });
+};
 
 const createToken = () => {
   var result = "";
@@ -157,4 +166,5 @@ export {
   generatePassword,
   validateSession,
   validatePassword,
+  returnSecret,
 };

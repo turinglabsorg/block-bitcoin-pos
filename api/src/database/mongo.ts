@@ -1,4 +1,4 @@
-import { returnSecret } from "../libs/aws";
+import { returnSecret } from "../libs/crypto";
 import { log } from "../libs/utils";
 import mongoose from "mongoose";
 
