@@ -28,10 +28,7 @@ async function main() {
   }
 
   // Derive child key using unhardened path
-  const child = node
-    .derive(parseInt(path.split("/")[0]))
-    .derive(parseInt(path.split("/")[1]));
-
+  const child = node.derivePath(path);
   // Get native segwit address
   const address = getAddress(child, bitcoin.networks.bitcoin);
 

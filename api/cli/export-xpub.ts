@@ -12,10 +12,12 @@ async function main() {
     throw new Error("Mnemonic is not defined in .env");
   }
   const seed = bip39.mnemonicToSeedSync(mnemonic);
-  const node = bip32.fromSeed(seed);
-  const strng = node.neutered().toBase58();
+  const root = bip32.fromSeed(seed);
+  const path = `m/84'/0'/0'`;
+  const node = root.derivePath(path);
+  const xpub = node.neutered().toBase58();
 
-  console.log(strng);
+  console.log(xpub);
 }
 
 main()
