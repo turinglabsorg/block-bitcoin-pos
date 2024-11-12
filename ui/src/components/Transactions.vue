@@ -62,7 +62,7 @@ getTransactions()
         <div class="amount-tx fiat">
           <span class="label">Address</span>
           <a :href="`https://mempool.space/address/${transaction.address}`" target="_blank">
-            <span class="value address">{{ transaction.address }}</span>
+            <span class="value address">{{ transaction.address.substring(0, 6) }}...{{ transaction.address.substring(transaction.address.length - 6) }}</span>
           </a>
         </div>
         <div class="amount-tx fiat">
