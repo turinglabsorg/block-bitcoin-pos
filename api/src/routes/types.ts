@@ -22,6 +22,7 @@ export interface CreateRequestBody {
   chain: AllowedChains;
   network: AllowedNetworks;
   amount: number;
+  identifier?: string;
 }
 
 export enum AllowedChains {

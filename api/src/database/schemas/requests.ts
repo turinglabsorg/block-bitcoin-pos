@@ -4,6 +4,7 @@ const { Schema } = mongoose;
 export const requestSchema = new Schema({
   uuid: String,
   userId: String,
+  identifier: String,
   chain: String,
   network: String,
   path: String,

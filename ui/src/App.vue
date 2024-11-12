@@ -3,6 +3,8 @@ import Login from './components/Login.vue'
 import Register from './components/Register.vue'
 import Settings from './components/Settings.vue'
 import Pos from './components/Pos.vue'
+import Payment from './components/Payment.vue'
+import Public from './components/Public.vue'
 import Splash from './components/Splash.vue'
 import { state } from './state'
 
@@ -19,6 +21,8 @@ import { state } from './state'
     <Login v-if="state.route === 'login'" />
     <Settings v-if="state.route === 'settings'" />
     <Register v-if="state.route === 'register'" />
+    <Public v-if="state.route === 'public'" />
+    <Payment v-if="state.route === 'payment'" />
     <Splash v-if="state.route === ''" />
     <div class="footer">
       Made by contributors on <a href="https://github.com/turinglabsorg/block-bitcoin-pos">GitHub</a>.
