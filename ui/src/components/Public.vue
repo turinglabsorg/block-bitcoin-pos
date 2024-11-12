@@ -9,7 +9,6 @@ const userNotFound = ref(false)
 const completed = ref(false)
 const checkInterval: any = ref()
 const message = ref('')
-const currency = ref('')
 const apiUrl = import.meta.env.VITE_API_URL
 const amount = ref('')
 const identifier = ref('')
@@ -113,7 +112,7 @@ const copyToClipboard = (text: string) => {
         <h2>{{ user.username }}</h2>
         <p v-if="user.metadata?.description">{{ user.metadata?.description }}</p>
       </div>
-      <div class="label">Amount ({{ user.currency.toUpperCase() }})</div>
+      <div class="label">Amount ({{ request.currency.toUpperCase() }})</div>
       <input type="text" class="input" v-model="amount" placeholder="Amount" />
       <div class="label">Message (optional)</div>
       <input type="text" class="input" v-model="identifier" placeholder="Add a message to the payment" />
@@ -121,10 +120,10 @@ const copyToClipboard = (text: string) => {
       <div class="message" v-if="message" :class="{ error: errored }">{{ message }}</div>
     </div>
     <div v-if="request.uuid && !completed">
-      <h3>Send {{ request?.amountCrypto }} BTC ({{ request?.amountFiat }} {{ currency.toUpperCase() }}) to:</h3>
+      <h3>Send {{ request?.amountCrypto }} BTC ({{ request?.amountFiat }} {{ request.currency.toUpperCase() }}) to:</h3>
       <img width="300" :src="qr" />
       <div class="address" @click="copyToClipboard(request.address)">{{ request.address }}</div>
-      BTC price: {{ request.price }} {{ currency.toUpperCase() }}<br>
+      BTC price: {{ request.price }} {{ request.currency.toUpperCase() }}<br>
       <a :href="`/request/${request.uuid}`" target="_blank">
         <button class="init-button" style="margin-top: 20px;">Share payment</button>
       </a>
