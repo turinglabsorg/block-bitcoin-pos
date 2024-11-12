@@ -407,9 +407,17 @@ textarea {
   color: #52c41a;
 }
 
-.transaction-status.failed {
+.transaction-status.expired {
   background: #fff1f0;
   color: #ff4d4f;
+}
+.value.address {
+  font-size: 0.6em;
+  margin-top: -5px;
+}
+.transaction-status.partial {
+  background: #fba19d;
+  color: #fff;
 }
 
 .transaction-amounts {

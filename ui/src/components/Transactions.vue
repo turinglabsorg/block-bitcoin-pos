@@ -58,8 +58,13 @@ getTransactions()
           {{ transaction.status.toUpperCase() }}
         </div>
       </div>
-
       <div class="transaction-amounts">
+        <div class="amount-tx fiat">
+          <span class="label">Address</span>
+          <a :href="`https://mempool.space/address/${transaction.address}`" target="_blank">
+            <span class="value address">{{ transaction.address }}</span>
+          </a>
+        </div>
         <div class="amount-tx fiat">
           <span class="label">Fiat</span>
           <span class="value">{{ transaction.amountFiat }} {{ transaction.currency.toUpperCase() }}</span>
