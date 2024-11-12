@@ -22,7 +22,7 @@ const isMenuOpen = ref(false)
         <img src="./assets/bitcoin.png" class="logo" />Block!POS
       </div>
       <div class="nav-buttons">
-        <button v-if="!session" @click="state.push('/login')" class="nav-button">Start</button>
+        <button v-if="!session" @click="state.push('/login')" class="start-button">Start</button>
         <button v-if="session" @click="isMenuOpen = !isMenuOpen" class="nav-button"><i
             class="lni lni-menu-hamburger-1"></i></button>
       </div>

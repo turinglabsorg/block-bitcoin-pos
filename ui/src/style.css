@@ -21,8 +21,19 @@ a {
   text-decoration: inherit;
 }
 a:hover {
-  color: #4d4d4d;
+  color: #ef5555;
   text-decoration: underline;
+}
+.restart-button {
+  margin-top: 20px;
+  width: 98%;
+  cursor: pointer;
+  background-color: #ef5555;
+  color: #fff;
+  box-sizing: border-box;
+  padding: 0.5em;
+  border-radius: 8px;
+  margin: 5px auto;
 }
 
 body {
@@ -89,6 +100,11 @@ button:hover {
   transform: translateX(-120%);
   transition: transform 0.3s ease-in-out;
 }
+.start-button {
+  background-color: #4d4d4d;
+  color: #fff;
+  font-size: 0.9em;
+}
 .menu.open {
   transform: translateX(0);
 }
@@ -134,7 +150,16 @@ body {
   box-sizing: border-box;
   display: block;
 }
-
+.splash {
+  margin-top: 10vh;
+  text-align: left;
+}
+.splash h3 {
+  margin-bottom: 15px;
+}
+.splash a {
+  text-decoration: underline;
+}
 .headline {
   display: block;
   align-items: left;
@@ -234,6 +259,11 @@ h2 {
   justify-content: left;
   margin-bottom: 10px;
 }
+.pos-container input {
+  width: 97%;
+  box-sizing: border-box;
+  margin-top: 15px;
+}
 textarea {
   height: 80px;
 }
@@ -263,6 +293,11 @@ textarea {
   margin-top: 10px;
   cursor: pointer;
 }
+.identifier {
+  font-size: 1.2em;
+  margin: 5px;
+  font-weight: 900;
+}
 .confirmation-text {
   font-size: 1.5em;
   margin-top: 20vh;
@@ -279,5 +314,13 @@ textarea {
 @media screen and (max-width: 320px) {
   #app {
     min-width: 0px;
+  }
+}
+
+@media screen and (min-width: 560px) {
+  .nav-buttons {
+    position: absolute;
+    top: -10px;
+    right: 0;
   }
 }

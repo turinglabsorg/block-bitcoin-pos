@@ -1,9 +1,18 @@
 <template>
-  <h1>
-    The fastest and easiest way to accept Bitcoin payments or donations.
-  </h1>
-  <p>
-    Accept Bitcoin in minutes. Free to use. No fees. Forever open-source. Completely non-custodial. Completely
-    on-chain.
-  </p>
+  <div class="splash">
+    <h1>
+      The fastest and easiest way to accept Bitcoin payments or donations.
+    </h1>
+    <p>
+      Accept Bitcoin in minutes. Free to use. No fees. Forever open-source. Completely non-custodial. Completely
+      on-chain. Fork it and self-host everything. Customize it to your brand. Basically do whatever you want.
+    </p>
+    <h3>Contributors</h3>
+    <a href="https://x.com/turinglabsorg" target="_blank">@turinglabsorg</a> |
+    <a href="https://x.com/ilseccoz" target="_blank">@ilseccoz</a> |
+    <a href="https://x.com/YOMI_WEB3" target="_blank">@YOMI_WEB3</a>|
+    <a href="https://x.com/KlavaWeb3" target="_blank">@KlavaWeb3</a><br><br>
+    Feel free to contribute to the project on <a href="https://github.com/turinglabsorg/blockpos"
+      target="_blank">GitHub</a>.
+  </div>
 </template>

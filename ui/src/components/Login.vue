@@ -31,7 +31,7 @@ const login = async () => {
   <h3>Enter your credentials to enter.</h3>
   <input type="email" class="input" v-model="email" placeholder="Email" />
   <input type="password" class="input" v-model="password" placeholder="Password" />
-  <button class="form-button" @click="login">Enter</button>
+  <button class="form-button" :disabled="isLoading" @click="login">Enter</button>
   <div class="message" v-if="message" :class="{ error: errored }">{{ message }}</div>
   <br /><br />
   <div class="link" @click="state.push('/register')">Don't have an account? Register here.</div>

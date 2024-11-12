@@ -13,34 +13,32 @@ provider:
       statements:
         - Effect: Allow
           Action:
-            - dynamodb:Query
-            - dynamodb:Scan
-            - dynamodb:GetItem
-            - dynamodb:PutItem
-            - dynamodb:UpdateItem
-            - dynamodb:DeleteItem
-          Resource:
-            - Fn::GetAtt: [BlockPoSCertificatesTable, Arn]
-        - Effect: Allow
-          Action:
             - ssm:GetParametersByPath
             - ssm:GetParameter
             - ssm:GetParameters
           Resource: 
             - arn:aws:ssm:*:*:parameter/*
-        - Effect: Allow
-          Action:
-            - dynamodb:*
-          Resource: "*"
 
   environment:
     SECRET_PREFIX: "/BlockPoS"
     STAGE: ${sls:stage}
+    tatum_api_key: ${param:tatum_api_key}
+    debug: ${param:debug}
+    sender_host: ${param:sender_host}
+    sender_port: ${param:sender_port}
+    sender_secure: ${param:sender_secure}
+    sender_username: ${param:sender_username}
+    sender_password: ${param:sender_password}
+    sender_name: ${param:sender_name}
+    sender_email: ${param:sender_email}
+    mongodb_connection: ${param:mongodb_connection}
+    platform_url: ${param:platform_url}
+    secret: ${param:secret}
 
 functions:
   api:
     timeout: 30
-    handler: src/api.handler
+    handler: ./src/api.handler
     events:
       - http:
           path: /
@@ -48,22 +46,6 @@ functions:
       - http:
           path: /{proxy+}
           method: ANY
-
-resources:
-  Resources:
-    BlockPoSCertificatesTable:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        AttributeDefinitions:
-          - AttributeName: certificateId
-            AttributeType: S
-        KeySchema:
-          - AttributeName: certificateId
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
-        TableName: ${sls:stage}_BlockPoSCertificatesTable
 
 plugins:
   - serverless-offline

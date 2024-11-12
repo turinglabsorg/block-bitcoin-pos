@@ -63,6 +63,7 @@ const copyToClipboard = (text: string) => {
     <h3>Send {{ request?.amountCrypto }} BTC to:</h3>
     <img width="300" :src="qr" />
     <div class="address" @click="copyToClipboard(request.address)">{{ request.address }}</div>
+    <div class="identifier">{{ request.identifier }}</div>
     BTC price: {{ request.price }} {{ request.currency.toUpperCase() }}<br>
     <hr>
     <div v-if="payment.uuid" style="margin-top: 20px;">

@@ -70,6 +70,7 @@ const requestPayment = async () => {
       checkInterval.value = setInterval(checkPayment, 5000)
     }
   } catch (e) {
+    isLoading.value = false
     errored.value = true
     message.value = 'Error requesting payment, retry..'
   }
@@ -80,6 +81,9 @@ const resetPayment = () => {
   request.value = {}
   payment.value = {}
   fullfillmentPercentage.value = 0
+  clearInterval(checkInterval.value)
+  amount.value = '0'
+  identifier.value = ''
 }
 
 const checkPayment = async () => {
@@ -107,7 +111,7 @@ const copyToClipboard = (text: string) => {
 </script>
 
 <template>
-  <div v-if="!request.uuid">
+  <div v-if="!request.uuid" class="pos-container">
     <div class="amount">{{ amount }} <div class="currency">{{ currency }}</div>
     </div>
     <button @click="addDigit('1')" class="pin-button">1</button>
@@ -122,6 +126,7 @@ const copyToClipboard = (text: string) => {
     <button @click="addDigit('0')" class="pin-button">0</button>
     <button @click="addDigit('.')" class="pin-button">.</button>
     <button @click="removeDigit()" class="pin-button">DEL</button>
+    <input type="text" class="input" v-model="identifier" placeholder="Add an identifier for the payment (eg. order id)" />
     <button @click="requestPayment" :disabled="isLoading" class="init-button">Init payment</button>
     <div class="message" v-if="message" :class="{ error: errored }">{{ message }}</div>
   </div>
@@ -133,6 +138,7 @@ const copyToClipboard = (text: string) => {
     <a :href="`/request/${request.uuid}`" target="_blank">
       <button class="init-button" style="margin-top: 20px;">Share payment</button>
     </a>
+    <div class="restart-button" @click="resetPayment">Restart</div>
     <div v-if="payment.uuid" style="margin-top: 20px;">
       Waiting for payment confirmation...
       <div class="fulfillment">{{ fullfillmentPercentage }}% received</div>
