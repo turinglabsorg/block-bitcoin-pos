@@ -54,27 +54,29 @@ const copyToClipboard = (text: string) => {
 </script>
 
 <template>
-  <div v-if="!request.uuid">
-    <div class="step-text">
-      Loading request...
+  <div class="request-container">
+    <div v-if="!request.uuid">
+      <div class="step-text">
+        Loading request...
+      </div>
     </div>
-  </div>
-  <div v-if="request.uuid && !completed">
-    <h3>Send {{ request?.amountCrypto }} BTC to:</h3>
-    <img width="300" :src="qr" />
-    <div class="address" @click="copyToClipboard(request.address)">{{ request.address }}</div>
-    <div class="identifier">{{ request.identifier }}</div>
-    BTC price: {{ request.price }} {{ request.currency.toUpperCase() }}<br>
-    <hr>
-    <div v-if="payment.uuid" style="margin-top: 20px;">
-      Waiting for payment confirmation...
-      <div class="fulfillment">{{ fullfillmentPercentage }}% received</div>
+    <div v-if="request.uuid && !completed">
+      <h3>Send {{ request?.amountCrypto }} BTC to:</h3>
+      <img width="300" :src="qr" />
+      <div class="address" @click="copyToClipboard(request.address)">{{ request.address }}</div>
+      <div class="identifier">{{ request.identifier }}</div>
+      BTC price: {{ request.price }} {{ request.currency.toUpperCase() }}<br>
+      <hr>
+      <div v-if="payment.uuid" style="margin-top: 20px;">
+        Waiting for payment confirmation...
+        <div class="fulfillment">{{ fullfillmentPercentage.toFixed(2) }}% received</div>
+      </div>
     </div>
-  </div>
-  <div v-if="request.uuid && completed">
-    <div class="confirmation-text">
-      <div style="font-size: 120px;">🤘</div>
-      <br>Payment completed!<br>
+    <div v-if="request.uuid && completed">
+      <div class="confirmation-text">
+        <div style="font-size: 120px;">🤘</div>
+        <br>Payment completed!<br>
+      </div>
     </div>
   </div>
 </template>

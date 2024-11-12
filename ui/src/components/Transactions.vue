@@ -54,15 +54,19 @@ getTransactions()
         <div class="transaction-date">
           {{ new Date(transaction.createdAt).toLocaleString() }}
         </div>
-        <div class="transaction-status" :class="transaction.status.toLowerCase()">
-          {{ transaction.status.toUpperCase() }}
+        <div class="transaction-actions">
+          <div class="transaction-status" :class="transaction.status.toLowerCase()">
+            {{ transaction.status.toUpperCase() }}
+          </div>
+          <i class="lni lni-share-2 hover" @click="state.push(`/request/${transaction.uuid}`)" />
         </div>
       </div>
       <div class="transaction-amounts">
         <div class="amount-tx fiat">
           <span class="label">Address</span>
           <a :href="`https://mempool.space/address/${transaction.address}`" target="_blank">
-            <span class="value address">{{ transaction.address.substring(0, 6) }}...{{ transaction.address.substring(transaction.address.length - 6) }}</span>
+            <span class="value address">{{ transaction.address.substring(0, 6) }}...{{
+              transaction.address.substring(transaction.address.length - 6) }}</span>
           </a>
         </div>
         <div class="amount-tx fiat">
@@ -72,6 +76,16 @@ getTransactions()
         <div class="amount-tx crypto">
           <span class="label">Bitcoin</span>
           <span class="value">{{ transaction.amountCrypto }} BTC</span>
+        </div>
+        <div class="amount-tx crypto">
+          <span class="label">Received</span>
+          <span class="value">{{ transaction.amountReceived }} BTC</span>
+        </div>
+        <div class="amount-tx crypto">
+          <span class="label">Fullfillment</span>
+          <span class="value" v-if="transaction.amountReceived">{{ (transaction.amountReceived /
+            transaction.amountCrypto * 100).toFixed(2) }}%</span>
+          <span class="value" v-else>0%</span>
         </div>
       </div>
     </div>

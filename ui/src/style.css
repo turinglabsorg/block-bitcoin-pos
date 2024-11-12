@@ -284,6 +284,7 @@ h2 {
 .register-container,
 .activate-container,
 .init-container,
+.request-container,
 .transactions-container {
   padding-top: 60px;
 }
@@ -323,6 +324,9 @@ textarea {
 .label {
   text-align: left;
   margin-bottom: 5px;
+}
+.hover:hover {
+  cursor: pointer;
 }
 .form-choice {
   height: 25vh;
@@ -396,6 +400,16 @@ textarea {
   border-radius: 999px;
   font-size: 0.8rem;
   font-weight: 600;
+}
+
+.transaction-actions {
+  border-radius: 999px;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #000;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .transaction-status.pending {

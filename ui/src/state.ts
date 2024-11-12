@@ -4,7 +4,7 @@ import axios from "axios";
 export const state = reactive({
   push(path: string) {
     window.history.pushState({}, "", path);
-    this.route = path.replace("/", "");
+    this.route = path.replace("/", "").split("/")[0];
   },
   getRouteParams: (param: string) => {
     const url = new URL(window.location.href);
