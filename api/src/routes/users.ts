@@ -139,7 +139,6 @@ export async function getUser(req: express.Request, res: express.Response) {
   const user = await validateSession(req);
   if (user !== false) {
     res.send({
-      message: "User logged in.",
       error: false,
       user: {
         email: user.email,

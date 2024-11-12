@@ -7,7 +7,7 @@ export const getAccountActivationEmail = (params: {
 Your account on the BlockPOS platform has been successfully created. To complete the activation and access the platform, we ask you to set a secure password.<br><br>
 
 To begin, click on the link below:<br>
-<a href='${params.platform_url}/password-new?token=${params.token}&email=${params.email}'>Activate your account</a><br><br>
+<a href='${params.platform_url}/activate?token=${params.token}&email=${params.email}'>Activate your account</a><br><br>
 
 This link is valid for 48 hours and will redirect you to a secure page where you can set your password. Please follow these password security criteria:<br>
 • Minimum 8 characters<br>

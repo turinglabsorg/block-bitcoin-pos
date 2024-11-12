@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
 :root {
   font-family: "DM Sans", sans-serif;
   font-optical-sizing: auto;
@@ -138,7 +138,60 @@ h3 {
 .form-button {
   width: 100%;
 }
-
+.message {
+  margin: 15px 0;
+  padding: 15px;
+  background-color: #85ff81;
+  color: #000;
+  border-radius: 8px;
+}
+.message.error {
+  background-color: #ef5555;
+  color: #fff;
+}
+h2 {
+  font-weight: 900;
+}
+.step-text {
+  height: calc(100vh - 250px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+}
+.pin-button {
+  width: 31%;
+  margin: 1%;
+  padding: 1em;
+}
+.amount {
+  font-size: 2em;
+  padding: 1em;
+}
+.init-button {
+  width: 98%;
+  margin-top: 4px;
+  height: 80px;
+}
+.checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  margin-bottom: 10px;
+}
+textarea {
+  height: 80px;
+}
+.label {
+  text-align: left;
+  margin-bottom: 5px;
+}
+.form-choice {
+  height: 25vh;
+  margin-bottom: 10px;
+  font-size: 1.5em;
+  width: 100%;
+}
 @media screen and (max-width: 560px) {
   #app {
     padding: 0rem 1rem 1rem 1rem;
