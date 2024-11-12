@@ -1,5 +1,4 @@
-<script setup>
-import { ref } from 'vue'
+<script setup lang="ts">
 import Login from './components/Login.vue'
 import Register from './components/Register.vue'
 import Settings from './components/Settings.vue'
