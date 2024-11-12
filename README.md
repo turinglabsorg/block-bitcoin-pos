@@ -26,6 +26,7 @@ For a detailed explanation of the project please visit: https://blockpos.xyz/
 - [x] List of all transactions
 - [ ] Magic link login that replaces the need of a password
 - [ ] Export your transactions to a CSV file
+- [ ] E-mail notifications when a payment is received
 - [ ] Customize your QR code
 - [ ] Customize your public page
 - [ ] Multi-language, currently only English
