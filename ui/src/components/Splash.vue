@@ -10,7 +10,7 @@
     <h3>Contributors</h3>
     <a href="https://x.com/turinglabsorg" target="_blank">@turinglabsorg</a> |
     <a href="https://x.com/ilseccoz" target="_blank">@ilseccoz</a><br><br>
-    Feel free to contribute to the project on <a href="https://github.com/turinglabsorg/blockpos"
+    Feel free to contribute to the project on <a href="https://github.com/turinglabsorg/block-bitcoin-pos"
       target="_blank">GitHub</a>.
   </div>
 </template>

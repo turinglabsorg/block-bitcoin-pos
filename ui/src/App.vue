@@ -52,7 +52,7 @@ state.getUser().then((user) => {
       </div>
     </div>
     <div class="footer">
-      Open-source project on <a href="https://github.com/turinglabsorg/block-bitcoin-pos">GitHub</a>.
+      Open-source project on <a href="https://github.com/turinglabsorg/block-bitcoin-pos" target="_blank">GitHub</a>.
     </div>
     <Login v-if="state.route === 'login'" />
     <Settings v-if="state.route === 'settings'" />
