@@ -147,7 +147,7 @@ html,
 body {
   max-width: 100%;
   display: block;
-  background-color: #f7931a!important;
+  background-color: #f7931a !important;
 }
 #app {
   max-width: 560px;
@@ -172,14 +172,15 @@ body {
 .headline {
   display: block;
   align-items: left;
-  width: 100%;
+  width: 560px;
   text-align: left;
   position: fixed;
   background-color: #f7931a;
   height: 45px;
   padding: 20px 0 0 10px;
   top: 0;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 10;
 }
 .headline:hover {
@@ -454,7 +455,7 @@ textarea {
   .transactions-container {
     grid-template-columns: 1fr;
   }
-  
+
   .transaction-card {
     margin-bottom: 1rem;
   }
@@ -466,6 +467,14 @@ textarea {
     min-width: 320px;
     max-width: 100%;
   }
+  .headline {
+    max-width: 100%;
+    left: 0;
+    transform: translateX(0);
+  }
+  .nav-buttons {
+    right: 20px;
+  }
 }
 
 @media screen and (max-width: 320px) {
@@ -473,3 +482,4 @@ textarea {
     min-width: 0px;
   }
 }
+
