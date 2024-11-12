@@ -162,7 +162,7 @@ export async function getPublicUser(
 ) {
   const username = req.params.username;
   const user = await User.findOne({ username });
-  if (user !== null) {
+  if (user !== null && user.username !== undefined) {
     res.send({
       user: {
         username: user.username,

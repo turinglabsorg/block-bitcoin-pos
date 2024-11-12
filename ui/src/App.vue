@@ -13,6 +13,10 @@ import { state } from './state'
 
 const session = ref(state.session)
 const isMenuOpen = ref(false)
+const userUsername = ref('')
+state.getUser().then((user) => {
+  userUsername.value = user?.username
+})
 
 </script>
 <template>
@@ -32,8 +36,14 @@ const isMenuOpen = ref(false)
       <button v-if="session" @click="isMenuOpen = !isMenuOpen" class="close-button"><i
           class="lni lni-menu-hamburger-1"></i></button>
       <div class="menu-buttons">
+        <button v-if="userUsername" @click="state.push('/' + userUsername); isMenuOpen = false" class="nav-button"><i
+            class="lni lni-megaphone-1"></i>
+          Your page</button>
         <button @click="state.push('/'); isMenuOpen = false" class="nav-button"><i class="lni lni-calculator-2"></i>
           POS</button>
+        <button @click="state.push('/transactions'); isMenuOpen = false" disabled class="nav-button"><i
+            class="lni lni-search-text"></i>
+          Transactions</button>
         <button @click="state.push('/settings'); isMenuOpen = false" class="nav-button"><i class="lni lni-gear-1"></i>
           Settings</button>
         <button @click="state.logout(); isMenuOpen = false" class="nav-button"><i class="lni lni-exit"></i>
@@ -46,11 +56,17 @@ const isMenuOpen = ref(false)
     <Login v-if="state.route === 'login'" />
     <Settings v-if="state.route === 'settings'" />
     <Register v-if="state.route === 'register'" />
-    <Public v-if="state.route === 'public'" />
     <Request v-if="state.route === 'request'" />
     <Activate v-if="state.route === 'activate'" />
     <Splash v-if="state.route === '' && !session" />
     <Pos v-if="state.route === '' && session" />
     <Init v-if="state.route === 'init'" />
+    <Public v-if="state.route !== 'login' &&
+      state.route !== 'register' &&
+      state.route !== 'activate' &&
+      state.route !== 'settings' &&
+      state.route !== 'request' &&
+      state.route !== 'init' &&
+      state.route !== ''" />
   </div>
 </template>

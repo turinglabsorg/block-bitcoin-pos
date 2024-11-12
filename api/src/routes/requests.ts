@@ -23,9 +23,22 @@ export const createRequest = async (
   req: express.Request,
   res: express.Response
 ) => {
-  const user = await validateSession(req);
+  let user = await validateSession(req);
   const body: CreateRequestBody = req.body;
   // Validate session
+  if (user === false && body.username === undefined) {
+    res.send({ message: "Unauthorized.", error: true });
+    return;
+  }
+  if (user === false && body.username !== undefined) {
+    const checkUsername = await User.findOne({ username: body.username });
+    if (!checkUsername && checkUsername === null) {
+      res.send({ message: "Username not found.", error: true });
+      return;
+    }
+    user = checkUsername;
+    user.id = checkUsername._id;
+  }
   if (user === false) {
     res.send({ message: "Unauthorized.", error: true });
     return;

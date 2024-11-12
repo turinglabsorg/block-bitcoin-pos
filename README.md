@@ -11,4 +11,44 @@ https://www.ledger.com/
 
 All the code is open source and the service will be free forever.
 
-For a detailed explanation of the project please visit: https://project.blockpos.xyz/
+For a detailed explanation of the project please visit: https://blockpos.xyz/
+
+## Features
+
+- [x] Simple and easy to use
+- [x] Open source
+- [x] Free forever
+- [x] Setup your own zpub or xpub
+- [x] Create a new wallet on the fly and use it
+- [x] Slippage protection, setup your own value
+- [x] Multi-currency, choose between USDC, EUR, GBP
+- [x] Public pages, show your store and accept payments
+- [ ] Multi-language, currently only English
+- [ ] Guides on how to use the app or setup your wallet
+- [ ] List of all transactions
+
+## Development of the API
+
+To run the project locally you need to install the dependencies and run the following commands:
+
+```bash
+cd api
+yarn
+yarn dev:local
+```
+
+Please be sure to have your `.env` file correctly set up.
+
+## Development of the UI
+
+To run the project locally you need to install the dependencies and run the following commands:
+
+```bash
+cd ui
+yarn
+yarn dev
+```
+
+## Contributing
+
+We welcome contributions to improve the project. Please open an issue or submit a pull request.

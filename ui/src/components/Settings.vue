@@ -7,6 +7,8 @@ const xpub = ref('')
 const currency = ref('usd')
 const slippage = ref(0.5)
 const allowUnconfirmed = ref(true)
+const username = ref('')
+const description = ref('')
 
 state.getUser().then((user) => {
   if (!user?.xpub) {
@@ -16,6 +18,8 @@ state.getUser().then((user) => {
   slippage.value = user?.slippage
   allowUnconfirmed.value = !user?.onlyConfirmed
   xpub.value = user?.xpub
+  username.value = user?.username
+  description.value = user?.metadata?.description
 })
 
 const isLoading = ref(false)
@@ -36,7 +40,11 @@ const setup = async () => {
     xpub: xpub.value,
     currency: currency.value,
     onlyConfirmed: !allowUnconfirmed.value,
-    slippage: slippage.value
+    slippage: slippage.value,
+    username: username.value,
+    metadata: {
+      description: description.value
+    }
   },
     {
       headers: {
@@ -59,21 +67,29 @@ const setup = async () => {
 </script>
 
 <template>
-  <h3>Fine tune your account.</h3>
-  <div class="label">Xpub or Zpub </div>
-  <textarea v-model="xpub" class="input" placeholder="Paste your xpub or zpub here" />
-  <div class="label">Currency</div>
-  <select class="input" v-model="currency">
-    <option value="usd">USD</option>
-    <option value="eur">EUR</option>
-    <option value="gbp">GBP</option>
-  </select>
-  <div class="label">Slippage</div>
-  <input type="number" class="input" v-model="slippage" placeholder="Slippage" />
-  <div class="checkbox">
-    <input type="checkbox" v-model="allowUnconfirmed" />
-    <label>Allow unconfirmed transactions</label>
+  <div class="settings">
+    <h3>Point of Sale settings</h3>
+    <div class="label">Xpub or Zpub </div>
+    <textarea v-model="xpub" class="input" placeholder="Paste your xpub or zpub here" />
+    <div class="label">Currency</div>
+    <select class="input" v-model="currency">
+      <option value="usd">USD</option>
+      <option value="eur">EUR</option>
+      <option value="gbp">GBP</option>
+    </select>
+    <div class="label">Slippage</div>
+    <input type="number" class="input" v-model="slippage" placeholder="Slippage" />
+    <div class="checkbox">
+      <input type="checkbox" v-model="allowUnconfirmed" />
+      <label>Allow unconfirmed transactions</label>
+    </div>
+    <hr />
+    <h3>Public page informations</h3>
+    <div class="label">Username</div>
+    <input type="text" v-model="username" class="input" placeholder="Public username" />
+    <div class="label">Description</div>
+    <textarea v-model="description" class="input" placeholder="Public description" />
+    <button :disabled="isLoading" @click="setup" class="form-button">Save</button>
+    <div class="message" v-if="message" :class="{ error: errored }">{{ message }}</div>
   </div>
-  <button :disabled="isLoading" @click="setup" class="form-button">Save</button>
-  <div class="message" v-if="message" :class="{ error: errored }">{{ message }}</div>
 </template>
