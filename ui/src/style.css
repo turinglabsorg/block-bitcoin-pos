@@ -285,7 +285,8 @@ h2 {
 .activate-container,
 .init-container,
 .request-container,
-.transactions-container {
+.transactions-container,
+.public-container {
   padding-top: 60px;
 }
 .public-description {
