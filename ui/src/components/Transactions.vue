@@ -69,12 +69,16 @@ getTransactions()
               transaction.address.substring(transaction.address.length - 6) }}</span>
           </a>
         </div>
+        <div class="amount-tx fiat" v-if="transaction.identifier">
+          <span class="label">Identifier</span>
+          <span class="value">{{ transaction.identifier }}</span>
+        </div>
         <div class="amount-tx fiat">
-          <span class="label">Fiat</span>
+          <span class="label">Original</span>
           <span class="value">{{ transaction.amountFiat }} {{ transaction.currency.toUpperCase() }}</span>
         </div>
         <div class="amount-tx crypto">
-          <span class="label">Bitcoin</span>
+          <span class="label">Requested</span>
           <span class="value">{{ transaction.amountCrypto }} BTC</span>
         </div>
         <div class="amount-tx crypto">
