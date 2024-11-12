@@ -111,44 +111,47 @@ const copyToClipboard = (text: string) => {
 </script>
 
 <template>
-  <div v-if="!request.uuid" class="pos-container">
-    <div class="amount">{{ amount }} <div class="currency">{{ currency }}</div>
+  <div class="pos-container">
+    <div v-if="!request.uuid">
+      <div class="amount">{{ amount }} <div class="currency">{{ currency }}</div>
+      </div>
+      <button @click="addDigit('1')" class="pin-button">1</button>
+      <button @click="addDigit('2')" class="pin-button">2</button>
+      <button @click="addDigit('3')" class="pin-button">3</button>
+      <button @click="addDigit('4')" class="pin-button">4</button>
+      <button @click="addDigit('5')" class="pin-button">5</button>
+      <button @click="addDigit('6')" class="pin-button">6</button>
+      <button @click="addDigit('7')" class="pin-button">7</button>
+      <button @click="addDigit('8')" class="pin-button">8</button>
+      <button @click="addDigit('9')" class="pin-button">9</button>
+      <button @click="addDigit('0')" class="pin-button">0</button>
+      <button @click="addDigit('.')" class="pin-button">.</button>
+      <button @click="removeDigit()" class="pin-button">DEL</button>
+      <input type="text" class="input" v-model="identifier"
+        placeholder="Add an identifier for the payment (eg. order id)" />
+      <button @click="requestPayment" :disabled="isLoading" class="init-button">Init payment</button>
+      <div class="message" v-if="message" :class="{ error: errored }">{{ message }}</div>
     </div>
-    <button @click="addDigit('1')" class="pin-button">1</button>
-    <button @click="addDigit('2')" class="pin-button">2</button>
-    <button @click="addDigit('3')" class="pin-button">3</button>
-    <button @click="addDigit('4')" class="pin-button">4</button>
-    <button @click="addDigit('5')" class="pin-button">5</button>
-    <button @click="addDigit('6')" class="pin-button">6</button>
-    <button @click="addDigit('7')" class="pin-button">7</button>
-    <button @click="addDigit('8')" class="pin-button">8</button>
-    <button @click="addDigit('9')" class="pin-button">9</button>
-    <button @click="addDigit('0')" class="pin-button">0</button>
-    <button @click="addDigit('.')" class="pin-button">.</button>
-    <button @click="removeDigit()" class="pin-button">DEL</button>
-    <input type="text" class="input" v-model="identifier" placeholder="Add an identifier for the payment (eg. order id)" />
-    <button @click="requestPayment" :disabled="isLoading" class="init-button">Init payment</button>
-    <div class="message" v-if="message" :class="{ error: errored }">{{ message }}</div>
-  </div>
-  <div v-if="request.uuid && !completed">
-    <h3>Send {{ request?.amountCrypto }} BTC ({{ request?.amountFiat }} {{ currency.toUpperCase() }}) to:</h3>
-    <img width="300" :src="qr" />
-    <div class="address" @click="copyToClipboard(request.address)">{{ request.address }}</div>
-    BTC price: {{ request.price }} {{ currency.toUpperCase() }}<br>
-    <a :href="`/request/${request.uuid}`" target="_blank">
-      <button class="init-button" style="margin-top: 20px;">Share payment</button>
-    </a>
-    <div class="restart-button" @click="resetPayment">Restart</div>
-    <div v-if="payment.uuid" style="margin-top: 20px;">
-      Waiting for payment confirmation...
-      <div class="fulfillment">{{ fullfillmentPercentage }}% received</div>
+    <div v-if="request.uuid && !completed">
+      <h3>Send {{ request?.amountCrypto }} BTC ({{ request?.amountFiat }} {{ currency.toUpperCase() }}) to:</h3>
+      <img width="300" :src="qr" />
+      <div class="address" @click="copyToClipboard(request.address)">{{ request.address }}</div>
+      BTC price: {{ request.price }} {{ currency.toUpperCase() }}<br>
+      <a :href="`/request/${request.uuid}`" target="_blank">
+        <button class="init-button" style="margin-top: 20px;">Share payment</button>
+      </a>
+      <div class="restart-button" @click="resetPayment">Restart</div>
+      <div v-if="payment.uuid" style="margin-top: 20px;">
+        Waiting for payment confirmation...
+        <div class="fulfillment">{{ fullfillmentPercentage }}% received</div>
+      </div>
     </div>
-  </div>
-  <div v-if="request.uuid && completed">
-    <div class="confirmation-text">
-      <div style="font-size: 120px;">🤘</div>
-      <br>Payment completed!<br>
-      <button style="margin-top: 20px;" class="form-button" @click="resetPayment">New payment</button>
+    <div v-if="request.uuid && completed">
+      <div class="confirmation-text">
+        <div style="font-size: 120px;">🤘</div>
+        <br>Payment completed!<br>
+        <button style="margin-top: 20px;" class="form-button" @click="resetPayment">New payment</button>
+      </div>
     </div>
   </div>
 </template>

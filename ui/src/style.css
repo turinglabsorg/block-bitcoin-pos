@@ -62,6 +62,7 @@ button {
   background-color: #4d4d4d;
   cursor: pointer;
   transition: border-color 0.25s;
+  color: #fff;
 }
 button:hover {
   cursor: pointer;
@@ -275,7 +276,11 @@ h2 {
   margin-bottom: 10px;
 }
 .pos-container,
-.settings{
+.settings,
+.login-container,
+.register-container,
+.activate-container,
+.init-container {
   padding-top: 60px;
 }
 .public-description {
@@ -296,7 +301,7 @@ h2 {
 }
 .public-description p {
   text-align: center;
-  margin:0;
+  margin: 0;
   padding-bottom: 30px;
 }
 .pos-container input {
@@ -357,13 +362,5 @@ textarea {
 @media screen and (max-width: 320px) {
   #app {
     min-width: 0px;
-  }
-}
-
-@media screen and (min-width: 560px) {
-  .nav-buttons {
-    position: absolute;
-    top: -10px;
-    right: 0;
   }
 }

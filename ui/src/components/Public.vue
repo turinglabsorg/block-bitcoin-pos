@@ -1,13 +1,8 @@
 <script setup lang="ts">
-import { state } from '../state'
 import { ref } from 'vue'
 import axios from 'axios'
 import QRCode from 'qrcode'
 
-const session = state.session
-if (!session) {
-  state.push('/login')
-}
 const isLoading = ref(false)
 const errored = ref(false)
 const userNotFound = ref(false)

@@ -25,15 +25,17 @@ const register = async () => {
 </script>
 
 <template>
-  <div v-if="message !== 'User created.'">
-    <h3>Let's get you <u>orangepilled</u>.</h3>
-    <input type="email" class="input" v-model="email" placeholder="Email" />
-    <button :disabled="isLoading" @click="register" class="form-button">Enter</button>
-    <div class="message" v-if="message" :class="{ error: errored }">{{ message }}</div>
-    <br /><br />
-    <div class="link" @click="state.push('/login')">Already have an account? Login here.</div>
-  </div>
-  <div v-if="message === 'User created.'" class="step-text">
-    <h2>Please check your email (also your spam folder) to complete your transition to the future.</h2>
+  <div class="register-container">
+    <div v-if="message !== 'User created.'">
+      <h3>Let's get you <u>orangepilled</u>.</h3>
+      <input type="email" class="input" v-model="email" placeholder="Email" />
+      <button :disabled="isLoading" @click="register" class="form-button">Enter</button>
+      <div class="message" v-if="message" :class="{ error: errored }">{{ message }}</div>
+      <br /><br />
+      <div class="link" @click="state.push('/login')">Already have an account? Login here.</div>
+    </div>
+    <div v-if="message === 'User created.'" class="step-text">
+      <h2>Please check your email (also your spam folder) to complete your transition to the future.</h2>
+    </div>
   </div>
 </template>

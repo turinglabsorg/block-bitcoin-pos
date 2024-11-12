@@ -45,11 +45,13 @@ const activate = async () => {
 </script>
 
 <template>
-  <h3>Please choose a strong password.</h3>
-  <input type="password" class="input" v-model="password" placeholder="Password" />
-  <input type="password" class="input" v-model="passwordConfirm" placeholder="Confirm password" />
-  <button :disabled="isLoading" @click="activate" class="form-button">Activate account</button>
-  <div class="message" v-if="message" :class="{ error: errored }">{{ message }}</div>
-  <br /><br />
-  <div class="link" @click="state.push('/login')">Already have an account? Login here.</div>
+  <div class="activate-container">
+    <h3>Please choose a strong password.</h3>
+    <input type="password" class="input" v-model="password" placeholder="Password" />
+    <input type="password" class="input" v-model="passwordConfirm" placeholder="Confirm password" />
+    <button :disabled="isLoading" @click="activate" class="form-button">Activate account</button>
+    <div class="message" v-if="message" :class="{ error: errored }">{{ message }}</div>
+    <br /><br />
+    <div class="link" @click="state.push('/login')">Already have an account? Login here.</div>
+  </div>
 </template>
