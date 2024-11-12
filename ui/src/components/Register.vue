@@ -27,7 +27,7 @@ const register = async () => {
 <template>
   <div class="register-container">
     <div v-if="message !== 'User created.'">
-      <h3>Let's get you <u>orangepilled</u>.</h3>
+      <h3>Swallow the <u>orange pill</u>.</h3>
       <input type="email" class="input" v-model="email" placeholder="Email" />
       <button :disabled="isLoading" @click="register" class="form-button">Enter</button>
       <div class="message" v-if="message" :class="{ error: errored }">{{ message }}</div>

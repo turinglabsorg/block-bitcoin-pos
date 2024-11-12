@@ -37,7 +37,7 @@ const checkPayment = async () => {
       message.value = res.data.message
     } else {
       payment.value = res.data.request
-      fullfillmentPercentage.value = res.data.fullfillmentPercentage
+      fullfillmentPercentage.value = res.data.fullfillmentPercentage ?? 0
       if (res.data.request.status === "completed") {
         completed.value = true
         clearInterval(checkInterval.value)
@@ -69,7 +69,7 @@ const copyToClipboard = (text: string) => {
       <hr>
       <div v-if="payment.uuid" style="margin-top: 20px;">
         Waiting for payment confirmation...
-        <div class="fulfillment">{{ fullfillmentPercentage.toFixed(2) }}% received</div>
+        <div class="fulfillment" v-if="fullfillmentPercentage">{{ fullfillmentPercentage.toFixed(2) }}% received</div>
       </div>
     </div>
     <div v-if="request.uuid && completed">

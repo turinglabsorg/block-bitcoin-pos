@@ -30,6 +30,6 @@ export const state = reactive({
   },
   logout: () => {
     localStorage.removeItem("blockpos_session");
-    window.location.href = "/login";
+    window.location.href = "/";
   },
 });

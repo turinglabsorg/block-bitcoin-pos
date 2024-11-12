@@ -24,6 +24,10 @@ For a detailed explanation of the project please visit: https://blockpos.xyz/
 - [x] Multi-currency, choose between USDC, EUR, GBP
 - [x] Public pages, show your store and accept payments
 - [x] List of all transactions
+- [ ] Magic link login that replaces the need of a password
+- [ ] Export your transactions to a CSV file
+- [ ] Customize your QR code
+- [ ] Customize your public page
 - [ ] Multi-language, currently only English
 - [ ] Guides on how to use the app or setup your wallet
 

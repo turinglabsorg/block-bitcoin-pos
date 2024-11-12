@@ -83,7 +83,7 @@ const checkPayment = async () => {
       message.value = res.data.message
     } else {
       payment.value = res.data.request
-      fullfillmentPercentage.value = res.data.fullfillmentPercentage
+      fullfillmentPercentage.value = res.data.fullfillmentPercentage ?? 0
       if (res.data.request.status === "completed") {
         completed.value = true
         clearInterval(checkInterval.value)
@@ -112,7 +112,7 @@ const copyToClipboard = (text: string) => {
         <h2>{{ user.username }}</h2>
         <p v-if="user.metadata?.description">{{ user.metadata?.description }}</p>
       </div>
-      <div class="label">Amount ({{ request.currency.toUpperCase() }})</div>
+      <div class="label">Amount ({{ user?.currency?.toUpperCase() }})</div>
       <input type="text" class="input" v-model="amount" placeholder="Amount" />
       <div class="label">Message (optional)</div>
       <input type="text" class="input" v-model="identifier" placeholder="Add a message to the payment" />
@@ -123,14 +123,14 @@ const copyToClipboard = (text: string) => {
       <h3>Send {{ request?.amountCrypto }} BTC ({{ request?.amountFiat }} {{ request.currency.toUpperCase() }}) to:</h3>
       <img width="300" :src="qr" />
       <div class="address" @click="copyToClipboard(request.address)">{{ request.address }}</div>
-      BTC price: {{ request.price }} {{ request.currency.toUpperCase() }}<br>
+      BTC price: {{ request.price }} {{ request?.currency?.toUpperCase() }}<br>
       <a :href="`/request/${request.uuid}`" target="_blank">
         <button class="init-button" style="margin-top: 20px;">Share payment</button>
       </a>
       <div class="restart-button" @click="resetPayment">Restart</div>
       <div v-if="payment.uuid" style="margin-top: 20px;">
         Waiting for payment confirmation...
-        <div class="fulfillment">{{ fullfillmentPercentage }}% received</div>
+        <div class="fulfillment" v-if="fullfillmentPercentage">{{ fullfillmentPercentage.toFixed(2) }}% received</div>
       </div>
     </div>
     <div v-if="request.uuid && completed">
