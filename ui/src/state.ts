@@ -10,7 +10,7 @@ export const state = reactive({
     const url = new URL(window.location.href);
     return url.searchParams.get(param);
   },
-  route: window.location.pathname.replace("/", ""),
+  route: window.location.pathname.replace("/", "").split("/")[0],
   getUser: async () => {
     const apiUrl = import.meta.env.VITE_API_URL;
     const response = await axios.get(`${apiUrl}/users`, {

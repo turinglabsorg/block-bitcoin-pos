@@ -37,7 +37,11 @@ const addDigit = (digit: string) => {
 }
 
 const removeDigit = () => {
-  amount.value = amount.value.slice(0, -1)
+  if (amount.value.length === 1) {
+    amount.value = '0'
+  } else {
+    amount.value = amount.value.slice(0, -1)
+  }
 }
 
 const requestPayment = async () => {
@@ -118,7 +122,7 @@ const checkPayment = async () => {
     <img width="300" :src="qr" />
     <div class="address">{{ request.address }}</div>
     BTC price: {{ request.price }} {{ currency.toUpperCase() }}<br>
-    <a :href="`/payment/${request.uuid}`" target="_blank">
+    <a :href="`/request/${request.uuid}`" target="_blank">
       <button class="init-button" style="margin-top: 20px;">Share payment</button>
     </a>
     <div v-if="payment.uuid" style="margin-top: 20px;">
@@ -126,7 +130,7 @@ const checkPayment = async () => {
       <div class="fulfillment">{{ fullfillmentPercentage }}% received</div>
     </div>
   </div>
-  <div v-if="completed">
+  <div v-if="request.uuid && completed">
     <div class="confirmation-text">
       <div style="font-size: 120px;">🤘</div>
       <br>Payment completed!<br>

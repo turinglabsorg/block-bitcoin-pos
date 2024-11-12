@@ -41,15 +41,13 @@ const generateMnemonic = async () => {
   }
   const mnemonic = bip39.generateMnemonic()
   seed.value = mnemonic
-  // TODO: Just for testing
-  seedConfirm.value = mnemonic
 }
 
 const confirmSeed = async () => {
   if (seedConfirm.value === seed.value) {
     const bip32 = BIP32Factory(ecc);
-    const seed = bip39.mnemonicToSeedSync(seedConfirm.value);
-    const node = bip32.fromSeed(seed);
+    const recreatedSeed = bip39.mnemonicToSeedSync(seedConfirm.value);
+    const node = bip32.fromSeed(recreatedSeed);
     xpub.value = node.neutered().toBase58();
     seed.value = ''
     seedConfirm.value = ''

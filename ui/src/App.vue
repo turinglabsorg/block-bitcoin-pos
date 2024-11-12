@@ -4,7 +4,7 @@ import Login from './components/Login.vue'
 import Register from './components/Register.vue'
 import Settings from './components/Settings.vue'
 import Pos from './components/Pos.vue'
-import Payment from './components/Payment.vue'
+import Request from './components/Request.vue'
 import Public from './components/Public.vue'
 import Splash from './components/Splash.vue'
 import Activate from './components/Activate.vue'
@@ -27,13 +27,13 @@ const session = ref(state.session)
     <Settings v-if="state.route === 'settings'" />
     <Register v-if="state.route === 'register'" />
     <Public v-if="state.route === 'public'" />
-    <Payment v-if="state.route === 'payment'" />
+    <Request v-if="state.route === 'request'" />
     <Activate v-if="state.route === 'activate'" />
     <Splash v-if="state.route === '' && !session" />
     <Pos v-if="state.route === '' && session" />
     <Init v-if="state.route === 'init'" />
     <div class="footer">
-      Made by contributors on <a href="https://github.com/turinglabsorg/block-bitcoin-pos">GitHub</a>.
+      Open-source project on <a href="https://github.com/turinglabsorg/block-bitcoin-pos">GitHub</a>.
     </div>
   </div>
 </template>
