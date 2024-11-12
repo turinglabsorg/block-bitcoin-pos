@@ -147,6 +147,7 @@ html,
 body {
   max-width: 100%;
   display: block;
+  background-color: #f7931a!important;
 }
 #app {
   max-width: 560px;
@@ -179,6 +180,7 @@ body {
   padding: 20px 0 0 10px;
   top: 0;
   left: 0;
+  z-index: 10;
 }
 .headline:hover {
   cursor: pointer;
@@ -276,11 +278,12 @@ h2 {
   margin-bottom: 10px;
 }
 .pos-container,
-.settings,
+.settings-container,
 .login-container,
 .register-container,
 .activate-container,
-.init-container {
+.init-container,
+.transactions-container {
   padding-top: 60px;
 }
 .public-description {
@@ -309,7 +312,8 @@ h2 {
   box-sizing: border-box;
   margin-top: 15px;
 }
-.settings h3 {
+.settings-container h3,
+.transactions-container h3 {
   margin: 10px 0;
 }
 textarea {
@@ -351,9 +355,106 @@ textarea {
   margin-top: 20vh;
   font-weight: 900;
 }
+
+.transactions-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+  padding-top: 80px;
+  padding-bottom: 30px;
+}
+
+.transaction-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.transaction-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.transaction-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.transaction-date {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.transaction-status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.transaction-status.pending {
+  background: #fff3dc;
+  color: #ffa940;
+}
+
+.transaction-status.completed {
+  background: #e6f7e6;
+  color: #52c41a;
+}
+
+.transaction-status.failed {
+  background: #fff1f0;
+  color: #ff4d4f;
+}
+
+.transaction-amounts {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.amount-tx {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  border-radius: 8px;
+  background: #f5f5f5;
+  font-size: 1.2rem;
+}
+
+.amount-tx .label {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.amount-tx .value {
+  font-weight: 600;
+  color: #333;
+}
+
+.amount-tx.crypto {
+  background: #f0f5ff;
+}
+
+@media (max-width: 768px) {
+  .transactions-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .transaction-card {
+    margin-bottom: 1rem;
+  }
+}
+
 @media screen and (max-width: 560px) {
   #app {
-    padding: 0rem 1rem 1rem 1rem;
+    padding: 0 1rem 1rem 1rem;
     min-width: 320px;
     max-width: 100%;
   }

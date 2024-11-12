@@ -23,9 +23,9 @@ For a detailed explanation of the project please visit: https://blockpos.xyz/
 - [x] Slippage protection, setup your own value
 - [x] Multi-currency, choose between USDC, EUR, GBP
 - [x] Public pages, show your store and accept payments
+- [x] List of all transactions
 - [ ] Multi-language, currently only English
 - [ ] Guides on how to use the app or setup your wallet
-- [ ] List of all transactions
 
 ## Development of the API
 

@@ -8,6 +8,7 @@ import Request from './components/Request.vue'
 import Public from './components/Public.vue'
 import Splash from './components/Splash.vue'
 import Activate from './components/Activate.vue'
+import Transactions from './components/Transactions.vue'
 import Init from './components/Init.vue'
 import { state } from './state'
 
@@ -41,7 +42,7 @@ state.getUser().then((user) => {
           Your page</button>
         <button @click="state.push('/'); isMenuOpen = false" class="nav-button"><i class="lni lni-calculator-2"></i>
           POS</button>
-        <button @click="state.push('/transactions'); isMenuOpen = false" disabled class="nav-button"><i
+        <button @click="state.push('/transactions'); isMenuOpen = false" class="nav-button"><i
             class="lni lni-search-text"></i>
           Transactions</button>
         <button @click="state.push('/settings'); isMenuOpen = false" class="nav-button"><i class="lni lni-gear-1"></i>
@@ -58,6 +59,7 @@ state.getUser().then((user) => {
     <Register v-if="state.route === 'register'" />
     <Request v-if="state.route === 'request'" />
     <Activate v-if="state.route === 'activate'" />
+    <Transactions v-if="state.route === 'transactions'" />
     <Splash v-if="state.route === '' && !session" />
     <Pos v-if="state.route === '' && session" />
     <Init v-if="state.route === 'init'" />
@@ -67,6 +69,7 @@ state.getUser().then((user) => {
       state.route !== 'settings' &&
       state.route !== 'request' &&
       state.route !== 'init' &&
+      state.route !== 'transactions' &&
       state.route !== ''" />
   </div>
 </template>

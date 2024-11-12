@@ -67,7 +67,7 @@ const setup = async () => {
 </script>
 
 <template>
-  <div class="settings">
+  <div class="settings-container">
     <h3>Point of Sale settings</h3>
     <div class="label">Xpub or Zpub </div>
     <textarea v-model="xpub" class="input" placeholder="Paste your xpub or zpub here" />
