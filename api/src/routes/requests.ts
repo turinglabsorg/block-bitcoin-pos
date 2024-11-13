@@ -8,7 +8,7 @@ import {
   RequestStatus,
   validateChain,
   validateNetwork,
-} from "./types";
+} from "../libs/types";
 import {
   calculateAmountCrypto,
   checkBitcoinPayment,

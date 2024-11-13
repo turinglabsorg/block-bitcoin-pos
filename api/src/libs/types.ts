@@ -1,10 +1,17 @@
+import type {
+  AuthenticatorTransportFuture,
+  CredentialDeviceType,
+  Base64URLString,
+  PublicKeyCredentialCreationOptionsJSON,
+} from "@simplewebauthn/types";
+
 export interface CreateUserBody {
   email: string;
 }
 
 export interface LoginUserBody {
   email: string;
-  password: string;
+  token: string;
 }
 
 export interface EditUserBody {
@@ -40,6 +47,16 @@ export enum RequestStatus {
   COMPLETED = "completed",
   PARTIAL = "partial",
   EXPIRED = "expired",
+}
+
+export interface Passkey {
+  id: Base64URLString;
+  publicKey: Uint8Array;
+  webAuthnUserID: Base64URLString;
+  counter: number;
+  deviceType: CredentialDeviceType;
+  backedUp: boolean;
+  transports?: AuthenticatorTransportFuture[];
 }
 
 export const validateChain = (chain: string): boolean => {

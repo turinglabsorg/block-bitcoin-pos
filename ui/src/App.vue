@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import Login from './components/Login.vue'
-import Register from './components/Register.vue'
+import Enter from './components/Enter.vue'
 import Settings from './components/Settings.vue'
 import Pos from './components/Pos.vue'
 import Request from './components/Request.vue'
@@ -27,7 +26,7 @@ state.getUser().then((user) => {
         <img src="./assets/bitcoin.png" class="logo" />Block!POS
       </div>
       <div class="nav-buttons">
-        <button v-if="!session" @click="state.push('/login')" class="start-button">Start</button>
+        <button v-if="!session" @click="state.push('/enter')" class="start-button">Enter</button>
         <button v-if="session" @click="isMenuOpen = !isMenuOpen" class="nav-button"><i
             class="lni lni-menu-hamburger-1"></i></button>
       </div>
@@ -54,17 +53,15 @@ state.getUser().then((user) => {
     <div class="footer">
       Open-source project on <a href="https://github.com/turinglabsorg/block-bitcoin-pos" target="_blank">GitHub</a>.
     </div>
-    <Login v-if="state.route === 'login'" />
     <Settings v-if="state.route === 'settings'" />
-    <Register v-if="state.route === 'register'" />
+    <Enter v-if="state.route === 'enter'" />
     <Request v-if="state.route === 'request'" />
     <Activate v-if="state.route === 'activate'" />
     <Transactions v-if="state.route === 'transactions'" />
     <Splash v-if="state.route === '' && !session" />
     <Pos v-if="state.route === '' && session" />
     <Init v-if="state.route === 'init'" />
-    <Public v-if="state.route !== 'login' &&
-      state.route !== 'register' &&
+    <Public v-if="state.route !== 'enter' &&
       state.route !== 'activate' &&
       state.route !== 'settings' &&
       state.route !== 'request' &&

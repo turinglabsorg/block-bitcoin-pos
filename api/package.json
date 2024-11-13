@@ -15,6 +15,7 @@
     "cli:derive-address:zpub": "ts-node ./cli/derive-address-zpub.ts"
   },
   "devDependencies": {
+    "@simplewebauthn/types": "^11.0.0",
     "@types/node": "^22.9.0",
     "dynamodb-admin": "^4.5.0",
     "serverless-offline": "^14.3.4",
@@ -25,6 +26,7 @@
     "@aws-sdk/client-dynamodb": "^3.433.0",
     "@aws-sdk/client-ssm": "^3.433.0",
     "@aws-sdk/lib-dynamodb": "^3.433.0",
+    "@simplewebauthn/server": "^11.0.0",
     "axios": "^1.7.7",
     "bip32": "^5.0.0-rc.0",
     "bip39": "^3.1.0",
