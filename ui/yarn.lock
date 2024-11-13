@@ -270,6 +270,18 @@
   resolved "https://registry.yarnpkg.com/@scure/base/-/base-1.1.9.tgz#e5e142fbbfe251091f9c5f1dd4c834ac04c3dbd1"
   integrity sha512-8YKhl8GHiNI/pU2VMaofa2Tor7PJRAjwQLBBuilkJ9L5+13yVbC7JO/wS7piioAvPSwR3JKM1IJ/u4xQzbcXKg==
 
+"@simplewebauthn/browser@^11.0.0":
+  version "11.0.0"
+  resolved "https://registry.yarnpkg.com/@simplewebauthn/browser/-/browser-11.0.0.tgz#270b47039b4561199bc16f25197431c8f10dbfb5"
+  integrity sha512-KEGCStrl08QC2I561BzxqGiwoknblP6O1YW7jApdXLPtIqZ+vgJYAv8ssLCdm1wD8HGAHd49CJLkUF8X70x/pg==
+  dependencies:
+    "@simplewebauthn/types" "^11.0.0"
+
+"@simplewebauthn/types@^11.0.0":
+  version "11.0.0"
+  resolved "https://registry.yarnpkg.com/@simplewebauthn/types/-/types-11.0.0.tgz#f329abc4c1bc3b18d6c7a4346af9fdec90d8a67e"
+  integrity sha512-b2o0wC5u2rWts31dTgBkAtSNKGX0cvL6h8QedNsKmj8O4QoLFQFR3DBVBUlpyVEhYKA+mXGUaXbcOc4JdQ3HzA==
+
 "@swc/core-darwin-arm64@1.9.2":
   version "1.9.2"
   resolved "https://registry.yarnpkg.com/@swc/core-darwin-arm64/-/core-darwin-arm64-1.9.2.tgz#98b60a56229c4341c1263723f985e04f3f82d499"

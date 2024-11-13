@@ -3,16 +3,16 @@ import serverless from "serverless-http";
 import cors from "cors";
 import { connect } from "./database/mongo";
 import {
-  createUser,
-  askToken,
+  createOrAskTokenForUser,
   loginUser,
   getUser,
   editUser,
   deleteUser,
-  runRecovery,
-  recoverPwd,
-  changePwd,
   getPublicUser,
+  addPasskey,
+  verifyPasskey,
+  authenticateWithPasskey,
+  consumeCredentialResponse,
 } from "./routes/users";
 import { checkRequest, createRequest, getRequests } from "./routes/requests";
 import { checkRequests } from "./routes/daemons";
@@ -39,9 +39,7 @@ app.use(async (req, res, next) => {
  */
 
 // Create new user
-app.post("/users", createUser);
-// Ask for a new email activation
-app.post("/users/token", askToken);
+app.post("/users", createOrAskTokenForUser);
 // Login user
 app.post("/users/login", loginUser);
 // Get user info
@@ -52,10 +50,14 @@ app.get("/users/:username", getPublicUser);
 app.put("/users", editUser);
 // Delete user
 app.delete("/users", deleteUser);
-// Start password recovery
-app.post("/users/run-recovery", runRecovery);
-// Recover password
-app.post("/users/recover-password", recoverPwd);
+// Add passkey
+app.post("/users/passkeys/add", addPasskey);
+// Authenticate with passkey
+app.post("/users/passkeys/authenticate", authenticateWithPasskey);
+// Verify passkey
+app.post("/users/passkeys/verify", verifyPasskey);
+// Consume passkey
+app.post("/users/passkeys/consume", consumeCredentialResponse);
 
 /**
  * Requests functions

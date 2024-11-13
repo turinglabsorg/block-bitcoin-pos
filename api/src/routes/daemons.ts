@@ -1,5 +1,5 @@
 import express from "express";
-import { RequestStatus } from "./types";
+import { RequestStatus } from "../libs/types";
 import { checkRequest } from "./requests";
 import { Request } from "../database/schemas/requests";
 let isWorking = false;

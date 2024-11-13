@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue'
 import { state } from '../state'
-import { ref } from 'vue'
 import axios from 'axios'
 import QRCode from 'qrcode'
 
@@ -29,6 +29,8 @@ state.getUser().then((user) => {
   currency.value = user?.currency
 })
 const addDigit = (digit: string) => {
+  document.activeElement instanceof HTMLElement && document.activeElement.blur()
+  
   if (amount.value === '0') {
     amount.value = digit
   } else {
@@ -37,6 +39,8 @@ const addDigit = (digit: string) => {
 }
 
 const removeDigit = () => {
+  document.activeElement instanceof HTMLElement && document.activeElement.blur()
+  
   if (amount.value.length === 1) {
     amount.value = '0'
   } else {
@@ -76,6 +80,29 @@ const requestPayment = async () => {
   }
 }
 
+const handleKeyPress = (event: KeyboardEvent) => {
+  if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) {
+    return
+  }
+
+  const validKeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.']
+  if (validKeys.includes(event.key)) {
+    addDigit(event.key)
+    return
+  }
+
+  if (event.key === 'Backspace' || event.key === 'Delete') {
+    removeDigit()
+    return
+  }
+
+  if (event.key === 'Enter') {
+    if (!request.value.uuid) {
+      requestPayment()
+    }
+  }
+}
+
 const resetPayment = () => {
   completed.value = false
   request.value = {}
@@ -108,6 +135,13 @@ const checkPayment = async () => {
 const copyToClipboard = (text: string) => {
   navigator.clipboard.writeText(text)
 }
+
+onMounted(() => {
+  window.addEventListener('keydown', handleKeyPress)
+})
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeyPress)
+})
 </script>
 
 <template>
