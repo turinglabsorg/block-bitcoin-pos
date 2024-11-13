@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import axios from 'axios'
 import { ref, onMounted, onUnmounted } from 'vue'
-import { startAuthentication, browserSupportsWebAuthnAutofill } from '@simplewebauthn/browser';
+import { startAuthentication } from '@simplewebauthn/browser';
 import { state } from '../state'
 
 const email = ref('')
