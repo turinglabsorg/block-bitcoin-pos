@@ -90,7 +90,7 @@ button:disabled {
 }
 .menu-buttons {
   position: absolute;
-  bottom: 7vh;
+  bottom: 60px;
   left: 0;
   width: 100%;
 }
