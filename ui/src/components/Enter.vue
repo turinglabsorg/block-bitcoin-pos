@@ -111,7 +111,7 @@ onUnmounted(() => {
   <div class="enter-container">
     <div v-if="!message">
       <h2>Swallow the <u>orange pill</u>.</h2>
-      <input type="email" class="input login-input" :class="{ shake: shakeEmail }" v-model="email"
+      <input type="email" class="input login-input" autocomplete="email" :class="{ shake: shakeEmail }" v-model="email"
         placeholder="Email" />
       <button :disabled="isLoading" @click="enter" class="form-button">Enter</button>
       <div class="message" v-if="message" :class="{ error: errored }">{{ message }}</div>
