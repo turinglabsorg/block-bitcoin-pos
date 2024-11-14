@@ -94,4 +94,9 @@ getTransactions()
       </div>
     </div>
   </div>
+  <div class="transactions-container" v-if="transactions.length === 0 && !isLoading">
+    <div class="error-transactions">
+      No transactions.
+    </div>
+  </div>
 </template>
