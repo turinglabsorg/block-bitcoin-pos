@@ -13,7 +13,6 @@ import {
 import {
   getRegistrationOptionsForUser,
   verifyAttestationResponse,
-  getAuthenticationOptionsForUser,
   verifyCredentialResponse,
 } from "../libs/passkeys";
 
@@ -315,59 +314,28 @@ export async function removePasskey(
   }
 }
 
-export async function authenticateWithPasskey(
+export async function enterWithPasskey(
   req: express.Request,
   res: express.Response
 ) {
   try {
-    const user = await User.findOne({ email: req.body.email });
+    const user = await User.findOne({
+      passkeys: {
+        $elemMatch: {
+          id: req.body.credential.id,
+        },
+      },
+    });
     if (user === null) {
-      res.send({ message: "No passkeys registered.", error: true });
+      res.send({
+        message: "Passkey not found, please register first.",
+        error: true,
+      });
       return;
     }
     if (user.passkeys.length === 0) {
       res.send({
         message: "No passkeys to consume.",
-        error: true,
-      });
-      return;
-    }
-    const options = await getAuthenticationOptionsForUser(user as UserModel);
-    user.currentAuthenticationOptions = options;
-    await user.save();
-    res.send({
-      message: "Passkey consumed.",
-      options,
-      error: false,
-    });
-  } catch (e) {
-    res.send({
-      message: "User service is not working, please retry.",
-      error: true,
-    });
-  }
-}
-
-export async function consumeCredentialResponse(
-  req: express.Request,
-  res: express.Response
-) {
-  try {
-    const user = await User.findOne({ email: req.body.email });
-    if (user === null) {
-      res.send({ message: "No passkeys registered.", error: true });
-      return;
-    }
-    if (user.passkeys.length === 0) {
-      res.send({
-        message: "No passkeys to consume.",
-        error: true,
-      });
-      return;
-    }
-    if (user.currentAuthenticationOptions === null) {
-      res.send({
-        message: "No authentication options available.",
         error: true,
       });
       return;
@@ -384,7 +352,7 @@ export async function consumeCredentialResponse(
     const verification = await verifyCredentialResponse(
       passkey,
       req.body.credential,
-      user.currentAuthenticationOptions.challenge
+      req.body.challenge
     );
     if (verification && verification.verified) {
       // Reset authentication options

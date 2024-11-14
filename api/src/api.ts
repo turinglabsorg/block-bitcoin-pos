@@ -11,8 +11,7 @@ import {
   getPublicUser,
   addPasskey,
   verifyPasskey,
-  authenticateWithPasskey,
-  consumeCredentialResponse,
+  enterWithPasskey,
   removePasskey,
 } from "./routes/users";
 import { checkRequest, createRequest, getRequests } from "./routes/requests";
@@ -53,12 +52,10 @@ app.put("/users", editUser);
 app.delete("/users", deleteUser);
 // Add passkey
 app.post("/users/passkeys/add", addPasskey);
-// Authenticate with passkey
-app.post("/users/passkeys/authenticate", authenticateWithPasskey);
 // Verify passkey
 app.post("/users/passkeys/verify", verifyPasskey);
 // Consume passkey
-app.post("/users/passkeys/consume", consumeCredentialResponse);
+app.post("/users/passkeys/enter", enterWithPasskey);
 // Remove passkey
 app.delete("/users/passkeys/remove", removePasskey);
 

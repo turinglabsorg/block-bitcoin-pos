@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import axios from 'axios'
 import { ref, onMounted, onUnmounted } from 'vue'
-import { startAuthentication } from '@simplewebauthn/browser';
+import { AuthenticationResponseJSON } from '@simplewebauthn/types';
 import { state } from '../state'
 
 const email = ref('')
@@ -61,21 +61,46 @@ const login = async () => {
     state.login(res.data.session)
   }
 }
+
+const arrayBufferToBase64url = (buffer: ArrayBuffer): string => {
+  return btoa(String.fromCharCode(...new Uint8Array(buffer)))
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=/g, '');
+}
+
 const usePasskey = async () => {
-  if (!email.value || !validateEmail(email.value)) {
-    triggerShake()
-    return
-  }
-  const authRes = await axios.post(`${apiUrl}/users/passkeys/authenticate`, {
-    email: email.value,
-  })
-  if (!authRes.data.error) {
-    const options = authRes.data.options
-    const credential = await startAuthentication({ optionsJSON: options })
-    const consumeRes = await axios.post(`${apiUrl}/users/passkeys/consume`, {
-      email: email.value,
-      credential: credential,
+  try {
+    const challenge = 'LOGIN_TO_BLOCKPOS'
+    const credential = await navigator.credentials.get({
+      publicKey: {
+        challenge: new TextEncoder().encode(challenge),
+        rpId: import.meta.env.VITE_RP_ID,
+      },
+    }) as PublicKeyCredential
+    if (!credential) return
+    if (credential.response === null) return
+
+    const credentialJSON: AuthenticationResponseJSON = {
+      id: credential.id,
+      type: 'public-key',
+      rawId: arrayBufferToBase64url(credential.rawId),
+      clientExtensionResults: {},
+      response: {
+        authenticatorData: arrayBufferToBase64url((credential.response as AuthenticatorAssertionResponse).authenticatorData),
+        clientDataJSON: arrayBufferToBase64url((credential.response as AuthenticatorAssertionResponse).clientDataJSON),
+        signature: arrayBufferToBase64url((credential.response as AuthenticatorAssertionResponse).signature),
+        userHandle: (credential.response as AuthenticatorAssertionResponse).userHandle
+          ? arrayBufferToBase64url((credential.response as AuthenticatorAssertionResponse).userHandle!)
+          : undefined
+      }
+    }
+
+    const consumeRes = await axios.post(`${apiUrl}/users/passkeys/enter`, {
+      challenge: Buffer.from(new TextEncoder().encode(challenge)).toString('base64').replace("=", ""),
+      credential: credentialJSON
     })
+
     if (!consumeRes.data.error) {
       state.login(consumeRes.data.session)
     } else {
@@ -86,6 +111,14 @@ const usePasskey = async () => {
         message.value = ''
       }, 3000)
     }
+  } catch (error: any) {
+    errored.value = true
+    message.value = error.message
+    setTimeout(() => {
+      errored.value = false
+      message.value = ''
+    }, 3000)
+    console.error(error)
   }
 }
 

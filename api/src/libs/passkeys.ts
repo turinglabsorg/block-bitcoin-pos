@@ -60,22 +60,6 @@ const verifyAttestationResponse = async (
   return verification;
 };
 
-const getAuthenticationOptionsForUser = async (
-  user: UserModel,
-  challenge?: string
-): Promise<PublicKeyCredentialRequestOptionsJSON> => {
-  const options: PublicKeyCredentialRequestOptionsJSON =
-    await generateAuthenticationOptions({
-      rpID,
-      challenge: challenge ?? undefined,
-      allowCredentials: user.passkeys.map((passkey) => ({
-        id: passkey.id,
-        transports: passkey.transports,
-      })),
-    });
-  return options;
-};
-
 const verifyCredentialResponse = async (
   passkey: Passkey,
   response: any,
@@ -107,6 +91,5 @@ const verifyCredentialResponse = async (
 export {
   getRegistrationOptionsForUser,
   verifyAttestationResponse,
-  getAuthenticationOptionsForUser,
   verifyCredentialResponse,
 };

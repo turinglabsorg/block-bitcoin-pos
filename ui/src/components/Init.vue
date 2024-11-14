@@ -90,7 +90,7 @@ const setup = async () => {
     errored.value = true
     message.value = res.data.message
   } else {
-    message.value = 'Account setup, redirecting...'
+    message.value = 'All done, redirecting...'
     setTimeout(() => {
       state.push('/')
     }, 3500)
