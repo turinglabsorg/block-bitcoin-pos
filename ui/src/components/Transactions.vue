@@ -83,7 +83,8 @@ getTransactions()
         </div>
         <div class="amount-tx crypto">
           <span class="label">Received</span>
-          <span class="value">{{ transaction.amountReceived }} BTC</span>
+          <span class="value" v-if="transaction.amountReceived">{{ transaction.amountReceived }} BTC</span>
+          <span class="value" v-else>0 BTC</span>
         </div>
         <div class="amount-tx crypto">
           <span class="label">Fullfillment</span>
