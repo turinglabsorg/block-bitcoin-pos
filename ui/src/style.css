@@ -522,13 +522,59 @@ textarea {
   gap: 12px;
 }
 
+.passkey-actions {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  display: flex;
+  gap: 8px;
+}
+
+.passkey-confirm-actions {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  display: flex;
+  gap: 8px;
+}
+
+.passkey-confirm {
+  background: #ef5555;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.passkey-cancel {
+  background: #4d4d4d;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.passkey-confirm:hover {
+  background: #ff3333;
+}
+
+.passkey-cancel:hover {
+  background: #666666;
+}
+
 .passkey-card {
   background: white;
   border-radius: 12px;
   padding: 16px;
+  padding-bottom: 60px;
   color: #000;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease;
+  position: relative;
 }
 
 .passkey-card:hover {
@@ -538,8 +584,14 @@ textarea {
 
 .passkey-header {
   display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.passkey-top {
+  display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
 }
 
 .passkey-icon {
@@ -551,38 +603,40 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.passkey-details {
-  flex: 1;
+  flex-shrink: 0;
 }
 
 .passkey-id {
   font-weight: 600;
   font-size: 1.1em;
   color: #333;
-  margin-bottom: 4px;
+  flex-grow: 1;
+  word-break: break-all;
 }
 
 .passkey-meta {
   display: flex;
-  gap: 12px;
-  font-size: 0.9em;
-  color: #666;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
 }
 
 .device-type {
   background: #f0f5ff;
-  padding: 2px 8px;
-  border-radius: 4px;
+  padding: 6px 12px;
+  border-radius: 6px;
   font-size: 0.9em;
+  display: inline-block;
+  width: fit-content;
 }
 
 .backup-status {
-  padding: 2px 8px;
-  border-radius: 4px;
+  padding: 6px 12px;
+  border-radius: 6px;
   background: #fff1f0;
   color: #ff4d4f;
+  display: inline-block;
+  width: fit-content;
 }
 
 .backup-status.backed {
@@ -594,8 +648,24 @@ textarea {
   font-size: 0.9em;
   color: #666;
   background: #f5f5f5;
-  padding: 4px 12px;
-  border-radius: 999px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  display: inline-block;
+  width: fit-content;
+}
+
+.passkey-remove {
+  background: #4d4d4d;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.passkey-remove:hover {
+  background: #ef5555;
 }
 
 .first-tab {

@@ -13,6 +13,7 @@ import {
   verifyPasskey,
   authenticateWithPasskey,
   consumeCredentialResponse,
+  removePasskey,
 } from "./routes/users";
 import { checkRequest, createRequest, getRequests } from "./routes/requests";
 import { checkRequests } from "./routes/daemons";
@@ -58,6 +59,8 @@ app.post("/users/passkeys/authenticate", authenticateWithPasskey);
 app.post("/users/passkeys/verify", verifyPasskey);
 // Consume passkey
 app.post("/users/passkeys/consume", consumeCredentialResponse);
+// Remove passkey
+app.delete("/users/passkeys/remove", removePasskey);
 
 /**
  * Requests functions

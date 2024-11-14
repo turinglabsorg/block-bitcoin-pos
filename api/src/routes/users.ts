@@ -297,6 +297,24 @@ export async function verifyPasskey(
   }
 }
 
+export async function removePasskey(
+  req: express.Request,
+  res: express.Response
+) {
+  const user = await validateSession(req);
+  if (user === false) {
+    res.send({ message: "Unauthorized.", error: true });
+    return;
+  }
+  if (req.body.id !== undefined) {
+    user.passkeys = user.passkeys.filter((p) => p.id !== req.body.id);
+    await user.save();
+    res.send({ message: "Passkey removed.", error: false });
+  } else {
+    res.send({ message: "Malformed request.", error: true });
+  }
+}
+
 export async function authenticateWithPasskey(
   req: express.Request,
   res: express.Response
@@ -371,8 +389,6 @@ export async function consumeCredentialResponse(
     if (verification && verification.verified) {
       // Reset authentication options
       user.currentAuthenticationOptions = null;
-      user.passkeys.find((p) => p.id === req.body.credential.id).counter =
-        verification.authenticationInfo.newCounter;
       await user.save();
       // Create JWT
       const jwt = {

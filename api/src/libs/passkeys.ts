@@ -28,7 +28,6 @@ const getRegistrationOptionsForUser = async (
     rpID,
     userName: user.email,
     attestationType: "none",
-    supportedAlgorithmIDs: [-7],
     excludeCredentials: userPasskeys.map((passkey) => ({
       id: passkey.id,
       transports: passkey.transports,

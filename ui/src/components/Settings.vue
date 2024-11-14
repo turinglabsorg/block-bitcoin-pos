@@ -113,6 +113,44 @@ const addPasskey = async () => {
   }
 }
 
+const pendingDeletion = ref('')
+
+const initiateRemove = (id: string) => {
+  pendingDeletion.value = id
+}
+
+const cancelRemove = () => {
+  pendingDeletion.value = ''
+}
+
+const removePasskey = async (id: string) => {
+  if (!id) return
+  if (isLoading.value) return
+  isLoading.value = true
+  const res = await axios.delete(`${apiUrl}/users/passkeys/remove`, {
+    headers: { 'Authorization': `Bearer ${state.session}` },
+    data: { id }
+  })
+  isLoading.value = false
+  pendingDeletion.value = ''
+  if (!res.data.error) {
+    message.value = 'Passkey removed.'
+    const index = passkeys.findIndex(p => p.id === id)
+    if (index > -1) {
+      passkeys.splice(index, 1)
+    }
+    setTimeout(() => {
+      message.value = ''
+    }, 1000)
+  } else {
+    errored.value = true
+    message.value = res.data.message
+    setTimeout(() => {
+      errored.value = false
+    }, 1000)
+  }
+}
+
 const activeTab = ref('pos') // possible values: 'pos', 'public', 'passkeys'
 </script>
 
@@ -161,19 +199,39 @@ const activeTab = ref('pos') // possible values: 'pos', 'public', 'passkeys'
       <div v-if="passkeys.length === 0">No passkeys found.</div>
       <div v-if="passkeys.length > 0" class="passkeys-list">
         <div v-for="passkey in passkeys" :key="passkey.id" class="passkey-card">
-          <div class="passkey-header">
-            <div class="passkey-icon">🔑</div>
-            <div class="passkey-details">
-              <div class="passkey-id">{{ passkey.id.slice(0, 8) }}...</div>
-              <div class="passkey-meta">
-                <span class="device-type">{{ passkey.deviceType }}</span>
-                <span class="backup-status" :class="{ backed: passkey.backedUp }">
-                  {{ passkey.backedUp ? '✓ Backed up' : '⚠️ Not backed up' }}
-                </span>
-              </div>
+          <div class="passkey-actions">
+            <button 
+              v-if="pendingDeletion !== passkey.id" 
+              class="passkey-remove"
+              @click="initiateRemove(passkey.id)"
+            >
+              Remove
+            </button>
+            <div v-else class="passkey-confirm-actions">
+              <button 
+                class="passkey-confirm"
+                @click="removePasskey(passkey.id)"
+              >
+                Confirm
+              </button>
+              <button 
+                class="passkey-cancel"
+                @click="cancelRemove"
+              >
+                Cancel
+              </button>
             </div>
-            <div class="passkey-counter">
-              Uses: {{ passkey.counter }}
+          </div>
+          <div class="passkey-header">
+            <div class="passkey-top">
+              <div class="passkey-icon">🔑</div>
+              <div class="passkey-id">{{ passkey.id }}</div>
+            </div>
+            <div class="passkey-meta">
+              <div class="device-type">{{ passkey.deviceType }}</div>
+              <div class="backup-status" :class="{ backed: passkey.backedUp }">
+                {{ passkey.backedUp ? '✓ Backed up' : '⚠️ Not backed up' }}
+              </div>
             </div>
           </div>
         </div>
@@ -188,4 +246,3 @@ const activeTab = ref('pos') // possible values: 'pos', 'public', 'passkeys'
     <div class="message" v-if="message && activeTab !== 'passkeys'" :class="{ error: errored }">{{ message }}</div>
   </div>
 </template>
-
