@@ -116,7 +116,7 @@ onUnmounted(() => {
       <button :disabled="isLoading" @click="enter" class="form-button">Enter</button>
       <div class="message" v-if="message" :class="{ error: errored }">{{ message }}</div>
       <br /><br />
-      <div class="link" @click="usePasskey">Use a passkey instead.</div>
+      <div class="link" @click="usePasskey">Enter with passkey.</div>
     </div>
     <div v-if="message && errored" class="step-text">
       <h2>{{ message }}</h2>

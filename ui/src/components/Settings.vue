@@ -78,7 +78,6 @@ const addPasskey = async () => {
       'Authorization': `Bearer ${state.session}`
     },
   })
-  console.log(addRes.data)
   let attResp;
   try {
     // Pass the options to the authenticator and wait for a response

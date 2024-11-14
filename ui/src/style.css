@@ -129,6 +129,7 @@ button:disabled {
   width: 70px;
   margin-bottom: 10px;
   float: left;
+  padding: 10px 15px;
 }
 .menu .close-button {
   background-color: #fff;

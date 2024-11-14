@@ -264,7 +264,6 @@ export async function verifyPasskey(
       req.body,
       user.currentRegistrationOptions.challenge
     );
-    console.log(verification);
     if (verification && verification.verified) {
       const newPasskey: Passkey = {
         webAuthnUserID: user.currentRegistrationOptions.user.id,
@@ -372,6 +371,8 @@ export async function consumeCredentialResponse(
     if (verification && verification.verified) {
       // Reset authentication options
       user.currentAuthenticationOptions = null;
+      user.passkeys.find((p) => p.id === req.body.credential.id).counter =
+        verification.authenticationInfo.newCounter;
       await user.save();
       // Create JWT
       const jwt = {
@@ -398,6 +399,7 @@ export async function consumeCredentialResponse(
       });
     }
   } catch (e) {
+    console.log("ERROR_WHILE_CONSUMING_CREDENTIAL_RESPONSE", e);
     res.send({
       message: "User service is not working, please retry.",
       error: true,

@@ -28,6 +28,7 @@ const getRegistrationOptionsForUser = async (
     rpID,
     userName: user.email,
     attestationType: "none",
+    supportedAlgorithmIDs: [-7],
     excludeCredentials: userPasskeys.map((passkey) => ({
       id: passkey.id,
       transports: passkey.transports,
@@ -61,11 +62,13 @@ const verifyAttestationResponse = async (
 };
 
 const getAuthenticationOptionsForUser = async (
-  user: UserModel
+  user: UserModel,
+  challenge?: string
 ): Promise<PublicKeyCredentialRequestOptionsJSON> => {
   const options: PublicKeyCredentialRequestOptionsJSON =
     await generateAuthenticationOptions({
       rpID,
+      challenge: challenge ?? undefined,
       allowCredentials: user.passkeys.map((passkey) => ({
         id: passkey.id,
         transports: passkey.transports,
@@ -81,6 +84,7 @@ const verifyCredentialResponse = async (
 ) => {
   let verification;
   try {
+    const publicKey = new Uint8Array(passkey.publicKey.buffer);
     verification = await verifyAuthenticationResponse({
       response,
       expectedChallenge,
@@ -88,7 +92,7 @@ const verifyCredentialResponse = async (
       expectedRPID: rpID,
       credential: {
         id: passkey.id,
-        publicKey: new Uint8Array(passkey.publicKey.buffer),
+        publicKey,
         counter: passkey.counter,
         transports: passkey.transports,
       },
