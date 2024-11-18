@@ -742,4 +742,7 @@ textarea {
   text-transform: uppercase;
   word-wrap: break-word;
   border-radius: 8px;
+  max-width: 100px;
+  font-size: 14px;
+  font-weight: 800;
 }

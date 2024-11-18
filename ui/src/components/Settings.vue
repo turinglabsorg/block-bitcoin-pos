@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { computed, reactive, ref } from "vue";
 import axios from "axios";
 import { state } from "../state";
 import { startRegistration } from "@simplewebauthn/browser";
@@ -29,6 +29,20 @@ const colorOptions = [
   { name: "Orange", value: "#ff5b00" },
   { name: "Purple", value: "#800080" },
 ];
+
+// Function to get the currency symbol
+const currencySymbol = computed(() => {
+  switch (currency.value) {
+    case "usd":
+      return "$";
+    case "eur":
+      return "€";
+    case "gbp":
+      return "£";
+    default:
+      return "$"; // Default
+  }
+});
 
 // Initialize user and product data when the user is authenticated
 state.getUser().then((user) => {
@@ -282,7 +296,7 @@ const activeTab = ref("pos"); // possible values: 'pos', 'public', 'passkeys', '
         <div v-for="product in products" :key="product._id" class="product-item" :style="{ backgroundColor: product.color }">
           <ul class="product-item">
             <li>{{ product.name }}</li>
-            <li>${{ product.price }}</li>
+            <li>{{ currencySymbol }}{{ product.price }}</li>
           </ul>
           <button @click="removeProduct(product._id)">Remove</button>
         </div>
