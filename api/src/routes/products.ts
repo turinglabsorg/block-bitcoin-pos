@@ -24,7 +24,7 @@ export async function addProduct(req: express.Request, res: express.Response) {
     user.products.push(product);
     await user.save();
 
-    res.send({ message: "Product added successfully.", error: false, products: user.products });
+    res.send({ message: "Product added successfully.", error: false, product });
   } catch (error) {
     console.error("Error adding product:", error);
     return res.status(500).json({
