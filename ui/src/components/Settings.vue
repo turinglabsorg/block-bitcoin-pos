@@ -4,6 +4,7 @@ import axios from "axios";
 import { state } from "../state";
 import { startRegistration } from "@simplewebauthn/browser";
 
+// Define state variables and reactive properties for the component
 const xpub = ref("");
 const currency = ref("usd");
 const slippage = ref(0.5);
@@ -12,8 +13,6 @@ const username = ref("");
 const email = ref("");
 const description = ref("");
 const passkeys: any[] = reactive([]);
-
-// Variables for products
 const products: any[] = reactive([]);
 const newProduct = reactive({
   _id: "",
@@ -22,7 +21,7 @@ const newProduct = reactive({
   color: "",
 });
 
-// Define available color categories
+// Color Options
 const colorOptions = [
   { name: "Red", value: "#FF0000" },
   { name: "Green", value: "#078129" },
@@ -31,8 +30,8 @@ const colorOptions = [
   { name: "Purple", value: "#800080" },
 ];
 
+// Initialize user and product data when the user is authenticated
 state.getUser().then((user) => {
-  console.log("Completamente caricato utente:", user);
   if (!user?.xpub) {
     state.push("/init");
   }
@@ -46,26 +45,36 @@ state.getUser().then((user) => {
   for (const passkey of user?.passkeys) {
     passkeys.push(passkey);
   }
-  // Manage products
   for (const product of user.products) {
     products.push(product);
   }
 });
 
+// Feedback Variables
 const isLoading = ref(false);
 const errored = ref(false);
 const message = ref("");
 const apiUrl = import.meta.env.VITE_API_URL;
 
+// Helper function for managing user feedback messages
+const setMessage = (msg: string, isError: boolean = false, timeout: number = 2500) => {
+  message.value = msg;
+  errored.value = isError;
+  if (timeout) {
+    setTimeout(() => {
+      message.value = "";
+      errored.value = false;
+    }, timeout);
+  }
+};
+
+// Primary functions for handling user data and interactions
 const setup = async () => {
   if (!xpub.value) {
-    errored.value = true;
-    message.value = "Xpub or Zpub is required.";
+    setMessage("Xpub or Zpub is required.", true);
     return;
   }
   isLoading.value = true;
-  errored.value = false;
-  message.value = "";
   const res = await axios.put(
     `${apiUrl}/users`,
     {
@@ -87,60 +96,97 @@ const setup = async () => {
   );
   isLoading.value = false;
   if (res.data.error) {
-    errored.value = true;
-    message.value = res.data.message;
+    setMessage(res.data.message, true);
   } else {
-    message.value = "Account saved.";
+    setMessage("Account saved.");
   }
 };
 
 const addPasskey = async () => {
-  const addRes = await axios.post(
-    `${apiUrl}/users/passkeys/add`,
-    {
-      email,
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${state.session}`,
-      },
-    }
-  );
-  let attResp;
   try {
-    // Pass the options to the authenticator and wait for a response
-    attResp = await startRegistration({ optionsJSON: addRes.data.options });
-  } catch (error: any) {
-    // Some basic error handling
-    if (error.name === "InvalidStateError") {
-      message.value = "Error: Authenticator was probably already registered by user";
+    const addRes = await axios.post(
+      `${apiUrl}/users/passkeys/add`,
+      { email },
+      {
+        headers: { Authorization: `Bearer ${state.session}` },
+      }
+    );
+    const attResp = await startRegistration({ optionsJSON: addRes.data.options });
+    const verifyRes = await axios.post(`${apiUrl}/users/passkeys/verify`, attResp, {
+      headers: { Authorization: `Bearer ${state.session}` },
+    });
+    if (verifyRes.data.error) {
+      setMessage(verifyRes.data.message, true);
     } else {
-      message.value = error;
+      passkeys.push(...verifyRes.data.passkeys);
+      setMessage("Passkey added.");
     }
-    throw error;
-  }
-  const verifyRes = await axios.post(`${apiUrl}/users/passkeys/verify`, attResp, {
-    headers: {
-      Authorization: `Bearer ${state.session}`,
-    },
-  });
-  if (verifyRes.data.error) {
-    message.value = verifyRes.data.message;
-    errored.value = true;
-    setTimeout(() => {
-      errored.value = false;
-    }, 1000);
-  } else {
-    for (const passkey of verifyRes.data.passkeys) {
-      passkeys.push(passkey);
-    }
-    message.value = "Passkey added.";
-    setTimeout(() => {
-      message.value = "";
-    }, 1000);
+  } catch (error: any) {
+    setMessage(`Error: ${error.message || "An unexpected error occurred"}`, true);
   }
 };
 
+const removePasskey = async (id: string) => {
+  if (!id || isLoading.value) return;
+  isLoading.value = true;
+  try {
+    const res = await axios.delete(`${apiUrl}/users/passkeys/remove`, {
+      headers: { Authorization: `Bearer ${state.session}` },
+      data: { id },
+    });
+    isLoading.value = false;
+    if (res.data.error) {
+      setMessage(res.data.message, true);
+    } else {
+      const index = passkeys.findIndex((p) => p.id === id);
+      if (index > -1) passkeys.splice(index, 1);
+      setMessage("Passkey removed.");
+    }
+  } catch {
+    setMessage("An error occurred while removing the passkey.", true);
+  }
+};
+
+const addProduct = async () => {
+  if (!newProduct.name || newProduct.price <= 0 || !newProduct.color) {
+    setMessage("All product fields are required.", true);
+    return;
+  }
+  try {
+    const res = await axios.post(`${apiUrl}/users/products/add`, newProduct, {
+      headers: { Authorization: `Bearer ${state.session}` },
+    });
+    if (!res.data.error && res.data.product) {
+      products.push(res.data.product);
+      setMessage("Product added successfully.");
+    } else {
+      setMessage(res.data.message, true);
+    }
+  } catch {
+    setMessage("An error occurred while adding the product.", true);
+  }
+};
+
+const removeProduct = async (id: string) => {
+  if (!id) return;
+  try {
+    const res = await axios.delete(`${apiUrl}/users/products/remove`, {
+      headers: { Authorization: `Bearer ${state.session}` },
+      data: { productId: id },
+    });
+    if (res.data.error) {
+      setMessage(res.data.message, true);
+    } else {
+      const index = products.findIndex((p) => p._id === id);
+      if (index > -1) products.splice(index, 1);
+      setMessage("Product removed.");
+    }
+  } catch {
+    setMessage("An error occurred while removing the product.", true);
+  }
+};
+
+// Handling the removal process
 const pendingDeletion = ref("");
 
 const initiateRemove = (id: string) => {
@@ -149,91 +195,6 @@ const initiateRemove = (id: string) => {
 
 const cancelRemove = () => {
   pendingDeletion.value = "";
-};
-
-const removePasskey = async (id: string) => {
-  if (!id) return;
-  if (isLoading.value) return;
-  isLoading.value = true;
-  const res = await axios.delete(`${apiUrl}/users/passkeys/remove`, {
-    headers: { Authorization: `Bearer ${state.session}` },
-    data: { id },
-  });
-  isLoading.value = false;
-  pendingDeletion.value = "";
-  if (!res.data.error) {
-    message.value = "Passkey removed.";
-    const index = passkeys.findIndex((p) => p.id === id);
-    if (index > -1) {
-      passkeys.splice(index, 1);
-    }
-    setTimeout(() => {
-      message.value = "";
-    }, 1000);
-  } else {
-    errored.value = true;
-    message.value = res.data.message;
-    setTimeout(() => {
-      errored.value = false;
-    }, 1000);
-  }
-};
-
-// Add product
-const addProduct = async () => {
-  if (!newProduct.name || newProduct.price <= 0 || !newProduct.color) {
-    message.value = "All product fields are required.";
-    errored.value = true;
-    return;
-  }
-  try {
-    const res = await axios.post(`${apiUrl}/users/products/add`, newProduct, {
-      headers: { Authorization: `Bearer ${state.session}` },
-    });
-    if (!res.data.error && res.data.product) {
-      const addedProduct = res.data.product;
-      if (addedProduct && addedProduct._id) {
-        // Update the products array reactively
-
-        products.push(addedProduct);
-        errored.value = false;
-        message.value = "Product added successfully.";
-      } else {
-        message.value = "Product data is missing required fields.";
-        errored.value = true;
-      }
-    } else {
-      message.value = res.data.message;
-      errored.value = true;
-    }
-  } catch (error) {
-    message.value = "An error occurred while adding the product.";
-    errored.value = true;
-  }
-};
-
-// Remove product
-const removeProduct = async (id: string) => {
-  if (!id) return;
-  try {
-    const res = await axios.delete(`${apiUrl}/users/products/remove`, {
-      headers: { Authorization: `Bearer ${state.session}` },
-      data: { productId: id },
-    });
-    if (!res.data.error) {
-      const index = products.findIndex((p) => p._id === id);
-      if (index > -1) {
-        products.splice(index, 1);
-      }
-      message.value = "Product removed.";
-    } else {
-      message.value = res.data.message;
-      errored.value = true;
-    }
-  } catch (error) {
-    message.value = "An error occurred while removing the product.";
-    errored.value = true;
-  }
 };
 
 const activeTab = ref("pos"); // possible values: 'pos', 'public', 'passkeys', 'products'
