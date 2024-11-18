@@ -4,22 +4,10 @@ import { encrypt, hash, validateSession } from "../libs/crypto";
 import { returnSecret } from "../libs/crypto";
 import { sendMail } from "../libs/mail";
 import { getAccountActivationEmail } from "../templates/account-activation";
-import {
-  EditUserBody,
-  CreateUserBody,
-  LoginUserBody,
-  Passkey,
-} from "../libs/types";
-import {
-  getRegistrationOptionsForUser,
-  verifyAttestationResponse,
-  verifyCredentialResponse,
-} from "../libs/passkeys";
+import { EditUserBody, CreateUserBody, LoginUserBody, Passkey } from "../libs/types";
+import { getRegistrationOptionsForUser, verifyAttestationResponse, verifyCredentialResponse } from "../libs/passkeys";
 
-export async function createOrAskTokenForUser(
-  req: express.Request,
-  res: express.Response
-) {
+export async function createOrAskTokenForUser(req: express.Request, res: express.Response) {
   const body: CreateUserBody = req.body;
   if (body.email !== undefined) {
     try {
@@ -43,9 +31,7 @@ export async function createOrAskTokenForUser(
         } as UserModel);
         await user.save();
       } else {
-        const elapsed = Math.floor(
-          (check.recoveryTokenExpiration! - new Date().getTime()) / 1000
-        );
+        const elapsed = Math.floor((check.recoveryTokenExpiration! - new Date().getTime()) / 1000);
         if (elapsed < 30 && elapsed > 0) {
           res.send({
             message: "Not so fast!",
@@ -70,8 +56,7 @@ export async function createOrAskTokenForUser(
       await sendMail(body.email, "Enter to BlockPOS", emailContent);
 
       res.send({
-        message:
-          "Please check your e-mail (also your spam folder) to proceed with login.",
+        message: "Please check your e-mail (also your spam folder) to proceed with login.",
         error: false,
       });
     } catch (e) {
@@ -98,8 +83,7 @@ export async function loginUser(req: express.Request, res: express.Response) {
           email: user.email,
           loggedAs: new Date().getTime(),
         };
-        const encrypted =
-          "0x" + (await encrypt(JSON.stringify(jwt))).replace("*", "");
+        const encrypted = "0x" + (await encrypt(JSON.stringify(jwt))).replace("*", "");
         user.recoveryToken = "";
         user.recoveryTokenExpiration = 0;
         user.lastUpdated = new Date().getTime();
@@ -145,6 +129,7 @@ export async function getUser(req: express.Request, res: express.Response) {
         onlyConfirmed: user.onlyConfirmed,
         metadata: user.metadata,
         passkeys: user.passkeys,
+        products: user.products,
       },
     });
   } else {
@@ -152,10 +137,7 @@ export async function getUser(req: express.Request, res: express.Response) {
   }
 }
 
-export async function getPublicUser(
-  req: express.Request,
-  res: express.Response
-) {
+export async function getPublicUser(req: express.Request, res: express.Response) {
   const username = req.params.username;
   const user = await User.findOne({ username });
   if (user !== null && user.username !== undefined) {
@@ -187,10 +169,7 @@ export async function editUser(req: express.Request, res: express.Response) {
       const checkUsername = await User.findOne({ username: body.username });
       if (
         (check === null || check._id.toString() === user._id.toString()) &&
-        (req.body.username === undefined ||
-          req.body.username === "" ||
-          checkUsername === null ||
-          checkUsername._id.toString() === user._id.toString())
+        (req.body.username === undefined || req.body.username === "" || checkUsername === null || checkUsername._id.toString() === user._id.toString())
       ) {
         user.email = body.email ?? user.email;
         user.xpub = body.xpub ?? user.xpub;
@@ -203,10 +182,7 @@ export async function editUser(req: express.Request, res: express.Response) {
         await user.save();
         res.send({ message: "User changed.", error: false });
       } else {
-        if (
-          checkUsername !== null &&
-          checkUsername._id.toString() !== user._id.toString()
-        ) {
+        if (checkUsername !== null && checkUsername._id.toString() !== user._id.toString()) {
           res.send({ message: "User with same username exists.", error: true });
         } else {
           res.send({ message: "User with same e-mail exists.", error: true });
@@ -230,10 +206,7 @@ export async function addPasskey(req: express.Request, res: express.Response) {
       res.send({ message: "Unauthorized.", error: true });
       return;
     }
-    const options = await getRegistrationOptionsForUser(
-      user as UserModel,
-      user.passkeys
-    );
+    const options = await getRegistrationOptionsForUser(user as UserModel, user.passkeys);
     user.currentRegistrationOptions = options;
     await user.save();
     res.send({
@@ -249,20 +222,14 @@ export async function addPasskey(req: express.Request, res: express.Response) {
   }
 }
 
-export async function verifyPasskey(
-  req: express.Request,
-  res: express.Response
-) {
+export async function verifyPasskey(req: express.Request, res: express.Response) {
   const user = await validateSession(req);
   if (user === false) {
     res.send({ message: "Unauthorized.", error: true });
     return;
   }
   try {
-    const verification = await verifyAttestationResponse(
-      req.body,
-      user.currentRegistrationOptions.challenge
-    );
+    const verification = await verifyAttestationResponse(req.body, user.currentRegistrationOptions.challenge);
     if (verification && verification.verified) {
       const newPasskey: Passkey = {
         webAuthnUserID: user.currentRegistrationOptions.user.id,
@@ -296,10 +263,7 @@ export async function verifyPasskey(
   }
 }
 
-export async function removePasskey(
-  req: express.Request,
-  res: express.Response
-) {
+export async function removePasskey(req: express.Request, res: express.Response) {
   const user = await validateSession(req);
   if (user === false) {
     res.send({ message: "Unauthorized.", error: true });
@@ -314,10 +278,7 @@ export async function removePasskey(
   }
 }
 
-export async function enterWithPasskey(
-  req: express.Request,
-  res: express.Response
-) {
+export async function enterWithPasskey(req: express.Request, res: express.Response) {
   try {
     const user = await User.findOne({
       passkeys: {
@@ -349,11 +310,7 @@ export async function enterWithPasskey(
       return;
     }
     // Verify credential response
-    const verification = await verifyCredentialResponse(
-      passkey,
-      req.body.credential,
-      req.body.challenge
-    );
+    const verification = await verifyCredentialResponse(passkey, req.body.credential, req.body.challenge);
     if (verification && verification.verified) {
       // Reset authentication options
       user.currentAuthenticationOptions = null;
@@ -363,8 +320,7 @@ export async function enterWithPasskey(
         email: user.email,
         loggedAs: new Date().getTime(),
       };
-      const encrypted =
-        "0x" + (await encrypt(JSON.stringify(jwt))).replace("*", "");
+      const encrypted = "0x" + (await encrypt(JSON.stringify(jwt))).replace("*", "");
 
       res.send({
         message: "Passkey verified.",
