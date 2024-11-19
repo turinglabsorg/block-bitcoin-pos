@@ -216,75 +216,76 @@ onUnmounted(() => {
 
 <template>
   <div class="pos-container">
-    <div class="settings-tabs">
-      <button @click="isManual = true" class="tab-button first-tab" :class="{ active: isManual }">Manual</button>
-      <button @click="isManual = false" class="tab-button last-tab" :class="{ active: !isManual }">Products</button>
-    </div>
-
-    <!-- Manual Mode -->
-    <div v-if="isManual">
-      <div class="amount">
-        {{ amount }}
-        <div class="currency">{{ currency }}</div>
+    <div v-if="!request.uuid">
+      <div class="settings-tabs">
+        <button @click="isManual = true" class="tab-button first-tab" :class="{ active: isManual }">Manual</button>
+        <button @click="isManual = false" class="tab-button last-tab" :class="{ active: !isManual }">Products</button>
       </div>
-      <button @click="addDigit('1')" class="pin-button">1</button>
-      <button @click="addDigit('2')" class="pin-button">2</button>
-      <button @click="addDigit('3')" class="pin-button">3</button>
-      <button @click="addDigit('4')" class="pin-button">4</button>
-      <button @click="addDigit('5')" class="pin-button">5</button>
-      <button @click="addDigit('6')" class="pin-button">6</button>
-      <button @click="addDigit('7')" class="pin-button">7</button>
-      <button @click="addDigit('8')" class="pin-button">8</button>
-      <button @click="addDigit('9')" class="pin-button">9</button>
-      <button @click="addDigit('0')" class="pin-button">0</button>
-      <button @click="addDigit('.')" class="pin-button">.</button>
-      <button @click="removeDigit()" class="pin-button">DEL</button>
-      <input type="text" class="input" v-model="identifier" placeholder="Add an identifier for the payment (e.g., order id)" />
-      <button @click="requestPayment" :disabled="isLoading" class="init-button">Init payment</button>
-      <div class="message" v-if="message" :class="{ error: errored }">{{ message }}</div>
-    </div>
 
-    <!-- Products Mode -->
-    <div v-else>
-      <div class="products-list">
-        <div v-for="product in products" :key="product._id" class="product-item" :style="{ backgroundColor: product.color }" @click="addProductToTotal(product)">
-          <ul class="product-item">
-            <li>{{ product.name }}</li>
-            <li>{{ currencySymbol }} {{ product.price }}</li>
-          </ul>
+      <!-- Manual Mode -->
+      <div v-if="isManual">
+        <div class="amount">
+          {{ amount }}
+          <div class="currency">{{ currency }}</div>
         </div>
+        <button @click="addDigit('1')" class="pin-button">1</button>
+        <button @click="addDigit('2')" class="pin-button">2</button>
+        <button @click="addDigit('3')" class="pin-button">3</button>
+        <button @click="addDigit('4')" class="pin-button">4</button>
+        <button @click="addDigit('5')" class="pin-button">5</button>
+        <button @click="addDigit('6')" class="pin-button">6</button>
+        <button @click="addDigit('7')" class="pin-button">7</button>
+        <button @click="addDigit('8')" class="pin-button">8</button>
+        <button @click="addDigit('9')" class="pin-button">9</button>
+        <button @click="addDigit('0')" class="pin-button">0</button>
+        <button @click="addDigit('.')" class="pin-button">.</button>
+        <button @click="removeDigit()" class="pin-button">DEL</button>
+        <input type="text" class="input" v-model="identifier" placeholder="Add an identifier for the payment (e.g., order id)" />
+        <button @click="requestPayment" :disabled="isLoading" class="init-button">Init payment</button>
+        <div class="message" v-if="message" :class="{ error: errored }">{{ message }}</div>
       </div>
 
-      <!-- Products Summary -->
-      <div v-if="Object.keys(productSummary).length > 0" class="selected-products-summary">
-        <table>
-          <thead>
-            <tr>
-              <th>Product</th>
-              <th>Quantity</th>
-              <th>Subtotal</th>
-              <th>Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(product, productName) in productSummary" :key="productName">
-              <td>{{ productName }}</td>
-              <td>{{ product.count }}</td>
-              <td>{{ currencySymbol }} {{ product.totalPrice.toFixed(2) }}</td>
-              <td>
-                <button @click="removeProduct(productName)" class="remove-product">X</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <!-- Products Mode -->
+      <div v-else>
+        <div class="products-list">
+          <div v-for="product in products" :key="product._id" class="product-item" :style="{ backgroundColor: product.color }" @click="addProductToTotal(product)">
+            <ul class="product-item">
+              <li>{{ product.name }}</li>
+              <li>{{ currencySymbol }} {{ product.price }}</li>
+            </ul>
+          </div>
+        </div>
 
-      <div class="amount">
-        <div>Total: {{ amount }} {{ currencySymbol }}</div>
+        <!-- Products Summary -->
+        <div v-if="Object.keys(productSummary).length > 0" class="selected-products-summary">
+          <table>
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(product, productName) in productSummary" :key="productName">
+                <td>{{ productName }}</td>
+                <td>{{ product.count }}</td>
+                <td>{{ currencySymbol }} {{ product.totalPrice.toFixed(2) }}</td>
+                <td>
+                  <button @click="removeProduct(productName)" class="remove-product">X</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="amount">
+          <div>Total: {{ amount }} {{ currencySymbol }}</div>
+        </div>
+        <button @click="requestPayment" :disabled="isLoading" class="init-button">Init payment</button>
       </div>
-      <button @click="requestPayment" :disabled="isLoading" class="init-button">Init payment</button>
     </div>
-
     <!-- Payment Request -->
     <div v-if="request.uuid && !completed">
       <h3>Send {{ request?.amountCrypto }} BTC ({{ request?.amountFiat }} {{ currency.toUpperCase() }}) to:</h3>
