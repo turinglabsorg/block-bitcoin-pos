@@ -241,7 +241,7 @@ onUnmounted(() => {
         <button @click="addDigit('.')" class="pin-button">.</button>
         <button @click="removeDigit()" class="pin-button">DEL</button>
         <input type="text" class="input" v-model="identifier" placeholder="Add an identifier for the payment (e.g., order id)" />
-        <button @click="requestPayment" :disabled="isLoading" class="init-button">Init payment</button>
+        <button @click="requestPayment" :disabled="isLoading" class="init-button">Init Payment</button>
         <div class="message" v-if="message" :class="{ error: errored }">{{ message }}</div>
       </div>
 
@@ -283,7 +283,8 @@ onUnmounted(() => {
         <div class="amount">
           <div>Total: {{ parseFloat(amount).toFixed(2) }} {{ currencySymbol }}</div>
         </div>
-        <button @click="requestPayment" :disabled="isLoading" class="init-button">Init payment</button>
+        <input type="text" class="input" v-model="identifier" placeholder="Add an identifier for the payment (e.g., order id)" />
+        <button @click="requestPayment" :disabled="isLoading" class="init-button">Init Payment</button>
       </div>
     </div>
     <!-- Payment Request -->
