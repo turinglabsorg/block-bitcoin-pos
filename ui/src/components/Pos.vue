@@ -256,7 +256,7 @@ onUnmounted(() => {
       </div>
 
       <!-- Products Summary -->
-      <div class="selected-products-summary">
+      <div v-if="Object.keys(productSummary).length > 0" class="selected-products-summary">
         <table>
           <thead>
             <tr>
