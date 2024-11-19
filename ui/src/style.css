@@ -270,6 +270,7 @@ h2 {
 .init-button {
   width: 98%;
   margin-top: 4px;
+  margin-bottom: 2rem;
   height: 80px;
 }
 .checkbox {
