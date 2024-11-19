@@ -727,9 +727,9 @@ textarea {
 .products-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 0.6rem;
   margin-top: 1rem;
-  justify-content: center;
+  justify-content: space-evenly;
 }
 
 .product-item {
@@ -737,12 +737,12 @@ textarea {
   padding: 0.2rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
-  text-align: center;
+  align-items: center;
+  justify-content: flex-end;
   text-transform: uppercase;
   word-wrap: break-word;
   border-radius: 8px;
-  max-width: 100px;
+  width: 101px;
   font-size: 14px;
   font-weight: 800;
 }

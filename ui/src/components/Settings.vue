@@ -161,6 +161,12 @@ const removePasskey = async (id: string) => {
   }
 };
 
+const resetNewProduct = () => {
+  newProduct.name = "";
+  newProduct.price = 0;
+  newProduct.color = "";
+};
+
 const addProduct = async () => {
   if (!newProduct.name || newProduct.price <= 0 || !newProduct.color) {
     setMessage("All product fields are required.", true);
@@ -173,6 +179,7 @@ const addProduct = async () => {
     if (!res.data.error && res.data.product) {
       products.push(res.data.product);
       setMessage("Product added successfully.");
+      resetNewProduct();
     } else {
       setMessage(res.data.message, true);
     }
@@ -282,12 +289,13 @@ const activeTab = ref("pos"); // possible values: 'pos', 'public', 'passkeys', '
 
     <!-- Products Tab -->
     <div v-if="activeTab === 'products'" class="tab-content">
-      <div class="label">Product Name</div>
+      <div class="label">Product</div>
       <input type="text" v-model="newProduct.name" class="input" placeholder="Product name" />
-      <div class="label">Product Price</div>
-      <input type="number" v-model="newProduct.price" class="input" placeholder="Product price" />
-      <div class="label">Product Color</div>
+      <div class="label">Price</div>
+      <input type="number" v-model="newProduct.price" class="input" />
+      <div class="label">Color</div>
       <select v-model="newProduct.color" class="input">
+        <option value="" disabled selected>Select a Color</option>
         <option v-for="color in colorOptions" :key="color.value" :value="color.value">{{ color.name }}</option>
       </select>
       <button @click="addProduct" class="form-button">Add Product</button>
@@ -296,7 +304,7 @@ const activeTab = ref("pos"); // possible values: 'pos', 'public', 'passkeys', '
         <div v-for="product in products" :key="product._id" class="product-item" :style="{ backgroundColor: product.color }">
           <ul class="product-item">
             <li>{{ product.name }}</li>
-            <li>{{ currencySymbol }}{{ product.price }}</li>
+            <li>{{ currencySymbol }} {{ product.price }}</li>
           </ul>
           <button @click="removeProduct(product._id)">Remove</button>
         </div>
