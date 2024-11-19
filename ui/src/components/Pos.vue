@@ -281,7 +281,7 @@ onUnmounted(() => {
         </div>
 
         <div class="amount">
-          <div>Total: {{ amount }} {{ currencySymbol }}</div>
+          <div>Total: {{ parseFloat(amount).toFixed(2) }} {{ currencySymbol }}</div>
         </div>
         <button @click="requestPayment" :disabled="isLoading" class="init-button">Init payment</button>
       </div>
