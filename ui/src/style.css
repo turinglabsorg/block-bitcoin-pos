@@ -67,7 +67,8 @@ button {
   color: #fff;
 }
 button:hover {
-  cursor: pointer;
+  transform: translateY(-2px);
+  opacity: 95%;
 }
 
 .nav-buttons {
@@ -270,6 +271,7 @@ h2 {
 .init-button {
   width: 98%;
   margin-top: 4px;
+  margin-bottom: 2rem;
   height: 80px;
 }
 .checkbox {
@@ -476,7 +478,7 @@ textarea {
 .settings-tabs {
   display: flex;
   margin: 20px 0;
-  background: #4d4d4d;
+  background: #fc9b1e;
   position: relative;
   width: 100%;
   border-radius: 10px;
@@ -722,4 +724,60 @@ textarea {
 
 .shake {
   animation: shake 0.8s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+.products-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  justify-content: space-evenly;
+}
+
+.product-item {
+  list-style: none;
+  padding: 0.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  text-transform: uppercase;
+  word-wrap: break-word;
+  border-radius: 8px;
+  width: 101px;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.selected-products-summary table {
+  margin-top: 1rem;
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 8px;
+}
+
+.selected-products-summary th,
+.selected-products-summary td {
+  border: 1px solid #ffc277;
+  padding: 8px;
+  text-align: center;
+}
+
+.selected-products-summary th {
+  background-color: #ffc277;
+}
+
+.remove-product {
+  background-color: transparent;
+  border: none;
+  color: red;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+th {
+  color: #6e6d6d;
+  font-weight: 400;
+  font-size: 0.8rem;
 }

@@ -2,7 +2,7 @@
   "scripts": {
     "start": "NO_SERVERLESS=true node ./.build/src/api.js",
     "build": "tsc",
-    "dev:local": "NO_SERVERLESS=true npx nodemon ./src/api.ts",
+    "dev:local": "npx nodemon ./src/api.ts",
     "dev:serverless:local": "serverless offline start --reloadHandler",
     "dev:serverless:live": "serverless dev",
     "deploy:serverless:dev": "npx serverless deploy --stage dev",

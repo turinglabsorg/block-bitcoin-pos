@@ -2,6 +2,14 @@ import mongoose from "mongoose";
 import { Passkey } from "../../libs/types";
 import { PublicKeyCredentialCreationOptionsJSON } from "@simplewebauthn/types";
 const { Schema } = mongoose;
+
+export interface Product {
+  _id: mongoose.Types.ObjectId;
+  name: string;
+  price: number;
+  color: "Red" | "Green" | "Blue" | "Yellow" | "Purple";
+}
+
 export interface UserModel {
   username: string;
   email: string;
@@ -16,6 +24,7 @@ export interface UserModel {
   currentRegistrationOptions?: PublicKeyCredentialCreationOptionsJSON | null;
   passkeys: Passkey[];
   lastUpdated: number;
+  products?: Product[];
 }
 
 export const userSchema = new Schema({
@@ -33,6 +42,10 @@ export const userSchema = new Schema({
   currentAuthenticationOptions: Object,
   passkeys: Array,
   lastUpdated: Number,
+  products: {
+    type: [Schema.Types.Mixed],
+    default: [],
+  },
 });
 
 export const User = mongoose.model("users", userSchema);

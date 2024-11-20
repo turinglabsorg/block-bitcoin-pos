@@ -2,21 +2,12 @@ import express from "express";
 import serverless from "serverless-http";
 import cors from "cors";
 import { connect } from "./database/mongo";
-import {
-  createOrAskTokenForUser,
-  loginUser,
-  getUser,
-  editUser,
-  deleteUser,
-  getPublicUser,
-  addPasskey,
-  verifyPasskey,
-  enterWithPasskey,
-  removePasskey,
-} from "./routes/users";
+import { createOrAskTokenForUser, loginUser, getUser, editUser, deleteUser, getPublicUser, addPasskey, verifyPasskey, enterWithPasskey, removePasskey } from "./routes/users";
 import { checkRequest, createRequest, getRequests } from "./routes/requests";
 import { checkRequests } from "./routes/daemons";
 import { log } from "./libs/utils";
+
+import { addProduct, getProducts, removeProduct } from "./routes/products";
 
 // Init express server
 const app = express();
@@ -58,6 +49,12 @@ app.post("/users/passkeys/verify", verifyPasskey);
 app.post("/users/passkeys/enter", enterWithPasskey);
 // Remove passkey
 app.delete("/users/passkeys/remove", removePasskey);
+// Add products
+app.post("/users/products/add", addProduct);
+// Remove products
+app.delete("/users/products/remove", removeProduct);
+// Get Products
+app.get("/users/products", getProducts);
 
 /**
  * Requests functions
