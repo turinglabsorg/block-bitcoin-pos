@@ -27,13 +27,13 @@ state.getUser().then((user) => {
       </div>
       <div class="nav-buttons">
         <button v-if="!session" @click="state.push('/enter')" class="start-button">Enter</button>
-        <button v-if="session" @click="isMenuOpen = !isMenuOpen" class="nav-button"><i
+        <button v-if="session" @click="isMenuOpen = !isMenuOpen" class="nav-button hamburger-button"><i
             class="lni lni-menu-hamburger-1"></i></button>
       </div>
     </div>
     <div class="menu" :class="{ open: isMenuOpen }">
       <img src="./assets/bitcoin.png" class="logo-menu" />
-      <button v-if="session" @click="isMenuOpen = !isMenuOpen" class="close-button"><i
+      <button v-if="session" @click="isMenuOpen = !isMenuOpen" class="close-button hamburger-button"><i
           class="lni lni-menu-hamburger-1"></i></button>
       <div class="menu-buttons">
         <button v-if="userUsername" @click="state.push('/' + userUsername); isMenuOpen = false" class="nav-button"><i

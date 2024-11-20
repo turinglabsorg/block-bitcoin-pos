@@ -70,7 +70,10 @@ button:hover {
   transform: translateY(-2px);
   opacity: 95%;
 }
-
+.hamburger-button:hover {
+  transform: none;
+  opacity: 30%;
+}
 .nav-buttons {
   display: flex;
   align-items: center;
@@ -130,7 +133,9 @@ button:disabled {
   width: 70px;
   margin-bottom: 10px;
   float: left;
+  height: 70px;
   padding: 10px 15px;
+  border-radius: 9999px;
 }
 .menu .close-button {
   background-color: #fff;
