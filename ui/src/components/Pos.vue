@@ -217,7 +217,7 @@ onUnmounted(() => {
 <template>
   <div class="pos-container">
     <div v-if="!request.uuid">
-      <div class="settings-tabs">
+      <div v-if="products.length > 0" class="settings-tabs">
         <button @click="isManual = true" class="tab-button first-tab" :class="{ active: isManual }">Manual</button>
         <button @click="isManual = false" class="tab-button last-tab" :class="{ active: !isManual }">Products</button>
       </div>
