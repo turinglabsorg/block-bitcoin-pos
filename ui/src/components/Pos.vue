@@ -51,11 +51,11 @@ const productSummary = computed(() => {
   selectedProducts.value.forEach((product) => {
     if (summary[product.name]) {
       summary[product.name].count++;
-      summary[product.name].totalPrice += product.price;
+      summary[product.name].totalPrice += parseFloat(parseFloat(product.price).toFixed(2));
     } else {
       summary[product.name] = {
         count: 1,
-        totalPrice: product.price,
+        totalPrice: parseFloat(product.price.toFixed(2)),
       };
     }
   });
@@ -110,7 +110,7 @@ const addProductToTotal = (product: Product) => {
 
 const updateTotal = () => {
   const total = selectedProducts.value.reduce((acc, product) => acc + product.price, 0);
-  amount.value = total.toString();
+  amount.value = parseFloat(total).toFixed(2)
 };
 
 const requestPayment = async () => {
@@ -180,6 +180,7 @@ const resetPayment = () => {
   clearInterval(checkInterval.value);
   amount.value = "0";
   identifier.value = "";
+  selectedProducts.value = [];
 };
 
 const checkPayment = async () => {
@@ -240,7 +241,8 @@ onUnmounted(() => {
         <button @click="addDigit('0')" class="pin-button">0</button>
         <button @click="addDigit('.')" class="pin-button">.</button>
         <button @click="removeDigit()" class="pin-button">DEL</button>
-        <input type="text" class="input" v-model="identifier" placeholder="Add an identifier for the payment (e.g., order id)" />
+        <input type="text" class="input" v-model="identifier"
+          placeholder="Add an identifier for the payment (e.g., order id)" />
         <button @click="requestPayment" :disabled="isLoading" class="init-button">Init Payment</button>
         <div class="message" v-if="message" :class="{ error: errored }">{{ message }}</div>
       </div>
@@ -248,7 +250,8 @@ onUnmounted(() => {
       <!-- Products Mode -->
       <div v-else>
         <div class="products-list">
-          <div v-for="product in products" :key="product._id" class="product-item" :style="{ backgroundColor: product.color }" @click="addProductToTotal(product)">
+          <div v-for="product in products" :key="product._id" class="product-item"
+            :style="{ backgroundColor: product.color }" @click="addProductToTotal(product)">
             <ul class="product-item">
               <li>{{ product.name }}</li>
               <li>{{ currencySymbol }} {{ product.price }}</li>
@@ -281,9 +284,10 @@ onUnmounted(() => {
         </div>
 
         <div class="amount">
-          <div>Total: {{ parseFloat(amount).toFixed(2) }} {{ currencySymbol }}</div>
+          <div>Total: {{ amount }} {{ currencySymbol }}</div>
         </div>
-        <input type="text" class="input" v-model="identifier" placeholder="Add an identifier for the payment (e.g., order id)" />
+        <input type="text" class="input" v-model="identifier"
+          placeholder="Add an identifier for the payment (e.g., order id)" />
         <button @click="requestPayment" :disabled="isLoading" class="init-button">Init Payment</button>
       </div>
     </div>
