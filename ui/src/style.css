@@ -270,7 +270,7 @@ h2 {
 }
 .amount {
   font-size: 2em;
-  padding: 1em;
+  padding: 1rem;
   position: relative;
 }
 .init-button {
@@ -751,15 +751,21 @@ textarea {
   border-radius: 8px;
   width: 101px;
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 500;
   cursor: pointer;
+}
+
+.selected-products-summary {
+  display: flex;
+  flex-direction: column; /* Imposta una direzione verticale */
+  align-items: flex-end; /* Allinea i contenuti a destra */
 }
 
 .selected-products-summary table {
   margin-top: 1rem;
+  margin-bottom: 0.4rem; /* Aggiunge spazio tra la tabella e il pulsante */
   width: 100%;
   border-collapse: collapse;
-  border-radius: 8px;
 }
 
 .selected-products-summary th,
@@ -785,4 +791,24 @@ th {
   color: #6e6d6d;
   font-weight: 400;
   font-size: 0.8rem;
+}
+
+.reset-button {
+  background: #ef5555;
+  font-size: 12px;
+  margin-right: 5px;
+}
+
+.amount-products {
+  font-size: 2em;
+  margin-top: 8px;
+  margin-left: 12px;
+}
+
+.total-div {
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-start;
+  justify-content: space-between;
 }
