@@ -110,7 +110,7 @@ const addProductToTotal = (product: Product) => {
 
 const updateTotal = () => {
   const total = selectedProducts.value.reduce((acc, product) => acc + product.price, 0);
-  amount.value = parseFloat(total).toFixed(2)
+  amount.value = parseFloat(total).toFixed(2);
 };
 
 const requestPayment = async () => {
@@ -241,8 +241,7 @@ onUnmounted(() => {
         <button @click="addDigit('0')" class="pin-button">0</button>
         <button @click="addDigit('.')" class="pin-button">.</button>
         <button @click="removeDigit()" class="pin-button">DEL</button>
-        <input type="text" class="input" v-model="identifier"
-          placeholder="Add an identifier for the payment (e.g., order id)" />
+        <input type="text" class="input" v-model="identifier" placeholder="Add an identifier for the payment (e.g., order id)" />
         <button @click="requestPayment" :disabled="isLoading" class="init-button">Init Payment</button>
         <div class="message" v-if="message" :class="{ error: errored }">{{ message }}</div>
       </div>
@@ -250,8 +249,7 @@ onUnmounted(() => {
       <!-- Products Mode -->
       <div v-else>
         <div class="products-list">
-          <div v-for="product in products" :key="product._id" class="product-item"
-            :style="{ backgroundColor: product.color }" @click="addProductToTotal(product)">
+          <div v-for="product in products" :key="product._id" class="product-item" :style="{ backgroundColor: product.color }" @click="addProductToTotal(product)">
             <ul class="product-item">
               <li>{{ product.name }}</li>
               <li>{{ currencySymbol }} {{ product.price }}</li>
@@ -281,13 +279,15 @@ onUnmounted(() => {
               </tr>
             </tbody>
           </table>
+          <div class="total-div">
+            <button class="reset-button" @click="resetPayment">Reset</button>
+            <div class="amount-products">
+              <div>Total: {{ amount }} {{ currencySymbol }}</div>
+            </div>
+          </div>
         </div>
 
-        <div class="amount">
-          <div>Total: {{ amount }} {{ currencySymbol }}</div>
-        </div>
-        <input type="text" class="input" v-model="identifier"
-          placeholder="Add an identifier for the payment (e.g., order id)" />
+        <input type="text" class="input" v-model="identifier" placeholder="Add an identifier for the payment (e.g., order id)" />
         <button @click="requestPayment" :disabled="isLoading" class="init-button">Init Payment</button>
       </div>
     </div>
